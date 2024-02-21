@@ -30,6 +30,11 @@
             = link_to '/', class: 'active nav-link' do
               %i.bi-house-fill
               Home
+            - if Current.user
+              Logged in as #{ Current.user.email }
+              = link_to 'Log out', log_out_path, method: :delete, class: 'nav-link'
+            - else
+              = link_to 'Sign in', sign_in_path, class: 'nav-link'
 
     - if flash.present?
       .container-fluid.flash-messages
