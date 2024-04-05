@@ -1,0 +1,15 @@
+-# -# Register an account
+-# %div#whole
+-#   %div#user-form
+-#     = form_for @user, url: sign_up_path do |f|
+-#       %h2#header Registration
+-#       = f.label :email
+-#       = f.text_field :email, autofocus: true, required: true
+-#       = f.label :password
+-#       = f.password_field :password, required: true
+-#       = f.label :password_confirmation
+-#       = f.password_field :password_confirmation, required: true
+      
+-#       %button.btn.btn-primary.form-btn{type: "submit" , id: "submit"} Register
+
+-#       = link_to 'Already have an account?', sign_in_path , id: "acc"

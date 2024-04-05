@@ -101,3 +101,7 @@ group :test do
   gem 'launchy'
   gem 'simplecov'
 end
+
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-rails_csrf_protection', '~>  1.0'
