@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_04_151732) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_06_164407) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -30,17 +30,23 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_04_151732) do
   end
 
   create_table "posts", force: :cascade do |t|
+    t.string "email"
     t.string "title"
     t.string "location"
-    t.date "date"
+    t.date "start_date"
+    t.date "end_date"
+    t.time "start_time"
+    t.time "end_time"
     t.string "organiser"
     t.date "deadline"
     t.string "description"
     t.string "url"
-    t.string "post_type"
     t.boolean "emailed"
-    t.text "tags"
-    t.string "recurring"
+    t.string "tags", default: [], array: true
+    t.boolean "recurring"
+    t.integer "recurring_interval_num"
+    t.string "recurring_interval_unit"
+    t.string "custom_recurring_info"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

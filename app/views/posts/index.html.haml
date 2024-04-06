@@ -30,8 +30,8 @@
           %td= post.deadline
           %td= post.url
           %td= post.post_type
-          %td= post.tags.map(&:name).join(', ')
-          %td= post.recrring
+          %td= post.tags.join(' -')
+          %td= post.recurring
           %td
             .btn-toolbar.float-end
               = link_to 'Show', post, class: 'btn btn-outline-secondary btn-sm'

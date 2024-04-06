@@ -1,17 +1,69 @@
 -# frozen_string_literal: true
 = simple_form_for(@post) do |f|
   .card-body 
+    = f.input :email, label: 'Email', input_html: { value: current_user.email }, readonly: true
     = f.input :title, label: 'Title'
     = f.input :location, label: 'Location'
-    = f.input :date, label: 'Date', as: :date
+    = f.input :start_date, label: 'Date', as: :date
+    = f.input :end_date, label: 'End Date', as: :date, hint: 'Optional'
+    = f.input :start_time, label: 'Start Time', as: :time, hint: 'Optional'
+    = f.input :end_time, label: 'End Time', as: :time, hint: 'Optional'
     = f.input :organiser, label: 'Organiser'
     = f.input :description, label: 'Description', as: :text
-    = f.input :deadline, label: 'Deadline', as: :date
-    = f.input :url, label: 'URL'
-    = f.input :post_type, label: 'Post Type', collection: Post::POST_TYPES
-    = f.input :tags, label: 'Tags', collection: Tag.all, as: :check_boxes
-    = f.input :recrring, label: 'Recurring', as: :boolean
+    = f.input :deadline, label: 'Deadline', as: :date, hint: 'Optional'
+    = f.input :url, label: 'URL', hint: 'Optional'
+    = f.input :tags, label: 'Tags', collection: ['tag1', 'tag2', 'tag3'], as: :check_boxes
+    = f.input :recurring, label: 'Recurring', as: :select, collection: [['No', false], ['Yes', true]], prompt: 'Select One'
+
+    .div#recurring-interval-container.hidden
+      = f.input :recurring_interval_num, label: 'Recurring Interval', input_html: { id: 'recurring-interval-field' }, hint: 'Optional'
+      = f.input :recurring_interval_unit, label: 'Interval Unit', as: :select, collection: ['days', 'weeks', 'months'], input_html: { id: 'recurring-interval-unit-field' }
+
+    .div#custom-recurring-info-container.hidden
+      = f.input :custom_recurring_info, label: 'Custom Recurring Info', input_html: { id: 'custom-recurring-info-field' }, hint: 'Optional'
+
   .card-footer.d-flex
     %button.btn.btn-primary{ type: 'submit' }
       Save
-    = link_to 'Back', post_path, class: 'btn btn-link ms-auto'
+    = link_to 'Back', root_path , class: 'btn btn-link ms-auto'
+
+
+:javascript
+  document.addEventListener('DOMContentLoaded', function() {
+    const recurringSelect = document.querySelector('#post_recurring');
+    const recurringIntervalContainer = document.querySelector('#recurring-interval-container');
+    const customRecurringInfoContainer = document.querySelector('#custom-recurring-info-container');
+    const recurringIntervalNumField = document.querySelector('#post_recurring_interval_num');
+    const recurringIntervalUnitField = document.querySelector('#post_recurring_interval_unit');
+    const customRecurringInfoField = document.querySelector('#post_custom_recurring_info');
+
+    recurringSelect.addEventListener('change', function() {
+      if (recurringSelect.value === 'true') {
+        recurringIntervalContainer.classList.remove('hidden');
+        customRecurringInfoContainer.classList.remove('hidden');
+      } else {
+        recurringIntervalContainer.classList.add('hidden');
+        customRecurringInfoContainer.classList.add('hidden');
+        // Clear any existing values if recurring is set to 'No'
+        recurringIntervalNumField.value = '';
+        recurringIntervalUnitField.value = '';
+        customRecurringInfoField.value = '';
+      }
+    });
+
+    recurringIntervalNumField.addEventListener('input', function() {
+      // Clear custom recurring info field if recurring interval num changes
+      customRecurringInfoField.value = '';
+    });
+
+    recurringIntervalUnitField.addEventListener('change', function() {
+      // Clear custom recurring info field if recurring interval unit changes
+      customRecurringInfoField.value = '';
+    });
+
+    customRecurringInfoField.addEventListener('input', function() {
+      // Clear recurring interval fields if custom recurring info changes
+      recurringIntervalNumField.value = '';
+      recurringIntervalUnitField.value = '';
+    });
+  });

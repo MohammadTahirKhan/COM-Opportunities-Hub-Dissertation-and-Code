@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
   resources :posts
+
+  # resources :regular_posts, only: %i[index] do
+  #   collection do
+  #     get :upcoming
+  #     get :recent
+  #     get :archives
+  #   end
+  # end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   # devise_scope :user do
   #   get "sign_in", to: 'devise/sessions#new'
