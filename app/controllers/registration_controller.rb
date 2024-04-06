@@ -9,7 +9,7 @@ class RegistrationController < Devise::RegistrationsController
             session[:user_id] = @user.id
             redirect_to root_path, notice: "Registration successful!"
         else
-            flash[:alert] = "Failed to register user"
+            flash[:alert] = "Failed to register user xcxc"
             render :new
         end
     end
@@ -17,6 +17,6 @@ class RegistrationController < Devise::RegistrationsController
     private
 
     def user_params
-        params.require(:user).permit(:email, :full_name, :password, :password_confirmation)
+        params.require(:user).permit(:email, :full_name, :password, :password_confirmation, :user_role)
       end
 end

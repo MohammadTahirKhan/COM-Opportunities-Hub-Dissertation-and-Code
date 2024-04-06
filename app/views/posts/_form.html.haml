@@ -1,0 +1,17 @@
+-# frozen_string_literal: true
+= simple_form_for(@post) do |f|
+  .card-body 
+    = f.input :title, label: 'Title'
+    = f.input :location, label: 'Location'
+    = f.input :date, label: 'Date', as: :date
+    = f.input :organiser, label: 'Organiser'
+    = f.input :description, label: 'Description', as: :text
+    = f.input :deadline, label: 'Deadline', as: :date
+    = f.input :url, label: 'URL'
+    = f.input :post_type, label: 'Post Type', collection: Post::POST_TYPES
+    = f.input :tags, label: 'Tags', collection: Tag.all, as: :check_boxes
+    = f.input :recrring, label: 'Recurring', as: :boolean
+  .card-footer.d-flex
+    %button.btn.btn-primary{ type: 'submit' }
+      Save
+    = link_to 'Back', post_path, class: 'btn btn-link ms-auto'

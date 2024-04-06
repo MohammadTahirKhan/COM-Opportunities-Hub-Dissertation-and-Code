@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :posts
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   # devise_scope :user do
   #   get "sign_in", to: 'devise/sessions#new'
@@ -24,10 +25,7 @@ Rails.application.routes.draw do
 
   # delete "log_out", to: 'sessions#destroy'
   # Defines the root path route ("/")
-  root "sessions#new"
-  # If a user is authenticated, redirect to home page
-  authenticated :user do
-    root "pages#home", as: :authenticated_root
-  end
+  root "pages#home"
+  
   
 end

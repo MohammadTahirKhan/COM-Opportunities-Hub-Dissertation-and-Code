@@ -1,0 +1,30 @@
+.row.justify-content-center
+  .col-sm-8.col-lg-6
+    .card
+      .card-header
+        Post details
+      .card-body
+        %dl.row.mb-0
+          %dt.col-sm-3 Title
+          %dd.col-sm-9= @post.title
+          %dt.col-sm-3 Location
+          %dd.col-sm-9= @post.location
+          %dt.col-sm-3 Date
+          %dd.col-sm-9= @post.date
+          %dt.col-sm-3 Organiser
+          %dd.col-sm-9= @post.organiser
+          %dt.col-sm-3 Description
+          %dd.col-sm-9= @post.description
+          %dt.col-sm-3 Deadline
+          %dd.col-sm-9= @post.deadline
+          %dt.col-sm-3 URL
+          %dd.col-sm-9= @post.url
+          %dt.col-sm-3 Post Type
+          %dd.col-sm-9= @post.post_type
+          %dt.col-sm-3 Tags
+          %dd.col-sm-9= @post.tags.map(&:name).join(', ')
+          %dt.col-sm-3 Recurring
+          %dd.col-sm-9= @post.recrring
+      .card-footer.d-flex
+        = link_to 'Edit', edit_post_path(@post), class: 'btn btn-outline-secondary'
+        = link_to 'Back', posts_path, class: 'btn btn-link ms-auto'

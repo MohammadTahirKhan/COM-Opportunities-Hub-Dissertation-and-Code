@@ -10,7 +10,6 @@
                 input_html: { autocomplete: "email" }%>
 
     <%= f.input :full_name,
-                required: true,
                 autofocus: true,
                 input_html: { autocomplete: "full_name" }%>
 
@@ -22,11 +21,26 @@
     <%= f.input :password_confirmation,
                 required: true,
                 input_html: { autocomplete: "new-password" } %>
+
+    <%= f.input :user_role,
+                as: :boolean,
+                label: "Are you here to post an opportunity?" %>
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit, "Sign up" %>
+    <%= f.button :submit, "Sign up", id: "signup-button" %>
   </div>
 <% end %>
 
 <%= render "devise/shared/links" %>
+
+# <script>
+#   document.getElementById('signup-button').addEventListener('click', function() {
+#     var checkbox = document.getElementById('user_role');
+#     if (checkbox.checked) {
+#       return confirm("You are about to sign up as a poster. Are you sure you want to proceed?");
+#     } else {
+#       return confirm("You are about to sign up as a regular user. Are you sure you want to proceed?");
+#     }
+#   });
+# </script>
