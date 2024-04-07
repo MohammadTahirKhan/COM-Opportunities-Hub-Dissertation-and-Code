@@ -18,6 +18,8 @@ class CreatePosts < ActiveRecord::Migration[7.0]
       t.integer :recurring_interval_num
       t.string :recurring_interval_unit
       t.string :custom_recurring_info
+      t.datetime :published_at
+      t.boolean :published, default: false
       t.timestamps
     end
   end

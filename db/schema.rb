@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_06_164407) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_07_172402) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -47,6 +47,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_06_164407) do
     t.integer "recurring_interval_num"
     t.string "recurring_interval_unit"
     t.string "custom_recurring_info"
+    t.datetime "published_at"
+    t.boolean "published", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -70,6 +72,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_06_164407) do
     t.string "uid"
     t.string "user_role"
     t.datetime "remember_created_at"
+    t.string "tags", default: [], array: true
+    t.datetime "last_sign_in_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true

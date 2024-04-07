@@ -1,0 +1,39 @@
+<%= simple_form_for(@post) do |f| %>
+  <div class="card-body">
+    <%= f.input :email, label: 'Email', input_html: { value: current_user.email }, readonly: true %>
+    <%= f.input :title, label: 'Title' %>
+    <%= f.input :location, label: 'Location' %>
+    <label for="start_date">Start Date</label>
+    <%= f.date_field :start_date, id: "post_start_date", class: "form-control", required: true %>
+    <label for="end_date">End Date</label>
+    <%= f.date_field :end_date, id: "post_end_date", class: "form-control", required: true %>
+    <label for="start_time">Start Time</label>
+    <%= f.time_field :start_time, label: 'Start Time', as: :time, hint: 'Optional' %>
+    <label for="end_time">End Time</label>
+    <%= f.time_field :end_time, id: "end_time", as: :time, placeholder: "Optional" %>
+    <%= f.input :organiser, label: 'Organiser' %>
+    <%= f.input :description, label: 'Description', as: :text %>
+
+    <label for="deadline">Deadline</label>
+    <%= f.date_field :deadline, id: "post_deadline", class: "form-control", placeholder: "Optional" %>
+
+    <%= f.input :url, label: 'URL', hint: 'Optional' %>
+    <%= f.input :tags, label: 'Tags', collection: ['tag1', 'tag2', 'tag3'], as: :check_boxes %>
+    <%= f.input :recurring, label: 'Recurring', as: :select, collection: [['No', false], ['Yes', true]], input_html: { id: 'recurring-field' } %>
+
+    <div id="recurring-interval-container" class="hidden">
+      <%= f.input :recurring_interval_num, label: 'If recurring, then Recurring Interval', input_html: { id: 'recurring-interval-field' }, hint: 'Optional' %>
+      <%= f.input :recurring_interval_unit, label: 'If recurring, then Interval Unit', as: :select, collection: ['days', 'weeks', 'months'], input_html: { id: 'recurring-interval-unit-field' } %>
+    </div>
+
+    <div id="custom-recurring-info-container" class="hidden">
+      <%= f.input :custom_recurring_info, label: 'If recurring, then any custom recurring info?', input_html: { id: 'custom-recurring-info-field' }, hint: 'Optional' %>
+    </div>
+  </div>
+  <small id="date-error" class="text-danger" style="display: none;">Please enter both start date and end date.</small>
+  <small id="tag-error" class="text-danger" style="display: none;">Please select at least one tag.</small>
+  <div class="card-footer d-flex">
+    <%= f.button :submit, 'Save', class: 'btn btn-primary', type: 'submit' %>
+    <%= link_to 'Back', root_path, class: 'btn btn-link ms-auto' %>
+  </div>
+<% end %>

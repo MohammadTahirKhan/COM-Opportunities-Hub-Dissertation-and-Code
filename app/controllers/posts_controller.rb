@@ -16,15 +16,15 @@ class PostsController < ApplicationController
       case @visibility
       when 'upcoming'
         if current_user.user_role == "0" || current_user.user_role == "2"
-          @posts = Post.where('date >= ?', Date.today).order(date: :asc)
+          @posts = Post.where('end_date >= ?', Date.today).order(end_date: :asc)
         else
           redirect_to root_path
         end
       when 'recent'
-        @posts = Post.where('date < ?', Date.today).order(date: :desc)
+        @posts = Post.where('end_date < ?', Date.today).order(end_date: :asc)
       when 'archives'
         if current_user.user_role == "0" || current_user.user_role == "2"
-          @posts = Post.where('date < ?', Date.today - 1.year).order(date: :desc)
+          @posts = Post.where('end_date < ?', Date.today - 1.year).order(end_date: :asc)
         else
           redirect_to root_path
         end
@@ -58,10 +58,26 @@ class PostsController < ApplicationController
     def create
       if current_user.user_role == "1" || current_user.user_role == "2"
         @post = Post.new(post_params)
+
+        # if (@post.start_date.present? && @post.end_date.present? && @post.start_date > @post.end_date) 
+        #   flash[:alert] = "Start date can't be after end date"
+        #   render :new, status: :unprocessable_entity
+        # end
+        # if (@post.start_date.present? && @post.start_date < Date.today) || (@post.end_date.present? && @post.end_date < Date.today)
+        #   flash[:alert] = "Start date and End date can't be before today"
+        #   render :new, status: :unprocessable_entity
+        # end
     
         if @post.save
           redirect_to posts_path, notice: "post was successfully created."
         else
+          flash[:alert] = "Failed to create post, please fill in all required(*) fields or check for errors"
+          flash[:alert] = "Start date can't be after end date" if @post.start_date.present? && @post.end_date.present? && @post.start_date > @post.end_date
+          flash[:alert] = "Start date and End date can't be before today" if @post.start_date.present? && @post.start_date < Date.today || @post.end_date.present? && @post.end_date < Date.today
+
+          if @post.start_date.blank? || @post.end_date.blank?
+            flash[:alert] = "Start date and End date can't be blank"
+          end
           render :new, status: :unprocessable_entity
         end
       else

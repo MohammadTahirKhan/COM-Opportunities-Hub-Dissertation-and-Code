@@ -10,6 +10,8 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.string :uid
       t.string :user_role
       t.datetime :remember_created_at
+      t.string :tags, array: true, default: []
+      t.datetime :last_sign_in_at
 
       t.timestamps
     end
