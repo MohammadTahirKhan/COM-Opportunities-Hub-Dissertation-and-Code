@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-    before_action :set_posts, only: %i[ show edit update destroy ]
+    before_action :set_posts, only: %i[ show edit update destroy publish]
     before_action :authenticate_user!
     # before_action :set_posts2, only: %i[ 
     before_action :require_user
@@ -16,18 +16,31 @@ class PostsController < ApplicationController
       case @visibility
       when 'upcoming'
         if current_user.user_role == "0" || current_user.user_role == "2"
-          @posts = Post.where('end_date >= ?', Date.today).order(end_date: :asc)
+          @posts = Post.where('end_date >= ?', Date.today).where(published: true).order(end_date: :asc)
         else
           redirect_to root_path
         end
       when 'recent'
-        @posts = Post.where('end_date < ?', Date.today).order(end_date: :asc)
+        @posts = Post.where('end_date < ?', Date.today).where(published: true).order(end_date: :asc)
       when 'archives'
         if current_user.user_role == "0" || current_user.user_role == "2"
-          @posts = Post.where('end_date < ?', Date.today - 1.year).order(end_date: :asc)
+          @posts = Post.where('end_date < ?', Date.today - 1.year).where(published: true).order(end_date: :asc)
         else
           redirect_to root_path
         end
+      when 'history'
+        if current_user.user_role == "1" || current_user.user_role == "2"
+          @posts = Post.where(email: current_user.email).order(end_date: :asc)
+        else
+          redirect_to root_path
+        end
+      when 'admin'
+        if current_user.user_role == "2"
+          @posts = Post.where(published: false).order(end_date: :asc)
+        else
+          redirect_to root_path
+        end
+
       else
         redirect_to root_path
       end
@@ -46,10 +59,22 @@ class PostsController < ApplicationController
         redirect_to root_path
       end
     end
+
+    # GET /posts/1/publish
+    def approve
+      if current_user.user_role == "2"
+        @post = Post.find(params[:id])
+        @post.update(published: true)
+        redirect_to posts_path, notice: "Post was successfully published."
+      else
+        redirect_to root_path
+      end
+    end
+    
   
     # GET /posts/1/edit
     def edit
-      if current_user.user_role != "2" || current_user.email != @post.email
+      if current_user.user_role != "2" && current_user.email != @post.email && @post.end_date < Date.today
         redirect_to root_path
       end
     end
@@ -58,16 +83,6 @@ class PostsController < ApplicationController
     def create
       if current_user.user_role == "1" || current_user.user_role == "2"
         @post = Post.new(post_params)
-
-        # if (@post.start_date.present? && @post.end_date.present? && @post.start_date > @post.end_date) 
-        #   flash[:alert] = "Start date can't be after end date"
-        #   render :new, status: :unprocessable_entity
-        # end
-        # if (@post.start_date.present? && @post.start_date < Date.today) || (@post.end_date.present? && @post.end_date < Date.today)
-        #   flash[:alert] = "Start date and End date can't be before today"
-        #   render :new, status: :unprocessable_entity
-        # end
-    
         if @post.save
           redirect_to posts_path, notice: "post was successfully created."
         else
@@ -87,9 +102,20 @@ class PostsController < ApplicationController
   
     # PATCH/PUT /posts/1
     def update
+      publish = params[:publish]
+      if publish == "true"
+        if current_user.user_role == "2"
+          @post.update(published: true)
+          redirect_to posts_path, notice: "Post was successfully published."
+        else
+          redirect_to root_path
+        end
+      end
       if current_user.user_role == "2" || current_user.email == @post.email
+      
         if @post.update(post_params)
-          redirect_to post_path, notice: "post was successfully updated."
+          @post.update(published: false)
+          redirect_to post_path, notice: "post was successfully updated, an admin needs to publish it for it to be visible to others."
         else
           render :edit, status: :unprocessable_entity
         end

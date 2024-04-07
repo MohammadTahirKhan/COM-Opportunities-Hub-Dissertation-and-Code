@@ -17,8 +17,6 @@
         %th Deadline
         %th Tags
         %th Recurring
-        -if params[:visibility] == 'history' || (params[:visibility] == 'admin' && current_user.user_role == '2')
-          %th status
         %th
     %tbody
       - @posts.each do |post|
@@ -31,14 +29,8 @@
           %td= post.deadline
           %td= post.tags.join(' -')
           %td= post.recurring
-          -if params[:visibility] == 'history' 
-            %td= post.published? ? 'Published' : 'Awaiting Approval'
-          -if params[:visibility] == 'admin' && current_user.user_role == '2'
-            %td= post.published? ? 'Published' : 'Awaiting Approval'
           %td
             .btn-toolbar.float-end
-              -if !post.published? && current_user.user_role == '2' && params[:visibility] == 'admin'
-                = link_to 'Approve', approve_post_path(post), method: :patch, class: 'btn btn-outline-secondary btn-sm'
               = link_to 'Show', post, class: 'btn btn-outline-secondary btn-sm'
               -if (current_user.email == post.email && post.end_date.present? && post.end_date > Date.today) || current_user.user_role == '2'
                 = link_to 'Edit', edit_post_path(post), class: 'btn btn-outline-secondary ms-1 btn-sm'

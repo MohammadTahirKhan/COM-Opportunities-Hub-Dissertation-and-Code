@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
-  resources :posts
+  resources :posts do
+    member do
+      patch :approve
+    end
+  end
+  
 
   # resources :regular_posts, only: %i[index] do
   #   collection do

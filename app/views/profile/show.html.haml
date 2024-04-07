@@ -1,0 +1,49 @@
+.row.justify-content-center
+  .col-sm-8.col-lg-6
+    .card
+      .card-header
+        Post details
+      .card-body
+        %dl.row.mb-0
+          %dt.col-sm-3 Title
+          %dd.col-sm-9= @post.title
+          %dt.col-sm-3 Location
+          %dd.col-sm-9= @post.location
+          %dt.col-sm-3 Start Date
+          %dd.col-sm-9= @post.start_date if @post.start_date.present?
+          -if @post.start_time.present?
+            %dt.col-sm-3 Start Time
+            %dd.col-sm-9= @post.start_time.to_s(:time)
+          -if @post.end_date.present?
+            %dt.col-sm-3 End Date
+            %dd.col-sm-9= @post.end_date
+          -if @post.end_time.present?
+            %dt.col-sm-3 End Time
+            %dd.col-sm-9= @post.end_time.to_s(:time)
+          %dt.col-sm-3 Organiser
+          %dd.col-sm-9= @post.organiser
+          %dt.col-sm-3 Deadline
+          %dd.col-sm-9= @post.deadline
+          %dt.col-sm-3 URL
+          %dd.col-sm-9= @post.url
+          -if @post.tags.present?
+            %dt.col-sm-3 Tags
+            %dd.col-sm-9= @post.tags.join(' -')
+          %dt.col-sm-3 Recurring
+          %dd.col-sm-9= @post.recurring
+          -if @post.recurring?
+            %dt.col-sm-3 Recurring Interval
+            %dd.col-sm-9= @post.recurring_interval_num
+            %dt.col-sm-3 Interval Unit
+            %dd.col-sm-9= @post.recurring_interval_unit
+            %dt.col-sm-3 Custom Recurring Info
+            %dd.col-sm-9= @post.custom_recurring_info
+          %dt.col-sm-3 Description
+          %dd.col-sm-9= @post.description
+
+
+
+      .card-footer.d-flex
+        -if current_user.email == @post.email || current_user.user_role == '2'
+          = link_to 'Edit', edit_post_path(@post), class: 'btn btn-outline-secondary'
+        = link_to 'Back', posts_path, class: 'btn btn-link ms-auto'

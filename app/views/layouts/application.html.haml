@@ -47,10 +47,19 @@
                 = link_to posts_path(visibility:'archives'), class: 'nav-link' do
                   %i.bi-search
                   Archives
-              -# - if current_user.user_role == "2"
-              -#   = link_to '/users', class: 'nav-link' do
-              -#     %i.bi-person
-              -#     Admin
+              - if current_user.user_role == "1" || current_user.user_role == "2"
+                = link_to posts_path(visibility:'history'), class: 'nav-link' do
+                  %i.bi-clock-history
+                  History
+              - if current_user.user_role == "2"
+                = link_to posts_path(visibility:'admin'), class: 'nav-link' do
+                  %i.bi-hourglass-split
+                  Pending
+              - if current_user.user_role == "2"
+                = link_to '/', class: 'nav-link' do
+                  %i.bi-file-earmark-text
+                  Email
+              
 
               -# %nav.navbar-nav.ms-auto
               Logged in as #{ current_user.email }
