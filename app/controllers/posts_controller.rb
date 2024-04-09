@@ -12,6 +12,17 @@ class PostsController < ApplicationController
   
     # GET /posts
     def index
+      Post.all.each do |post|
+        if post.recurring == true
+          if post.end_date < Date.today
+            if post.recurring_interval_num.present? && post.recurring_interval_unit.present?
+              post.update(start_date: post.start_date + post.recurring_interval_num.send(post.recurring_interval_unit))
+              post.update(end_date: post.end_date + post.recurring_interval_num.send(post.recurring_interval_unit))
+              post.update(deadline: post.deadline + post.recurring_interval_num.send(post.recurring_interval_unit))
+            end
+          end
+        end
+      end
       @visibility = params[:visibility]
       case @visibility
       when 'upcoming'
@@ -40,7 +51,25 @@ class PostsController < ApplicationController
         else
           redirect_to root_path
         end
-
+      when 'saved'
+        if current_user.user_role == "0"
+          @posts = []
+          for post in Post.all
+            if current_user.saved_post_ids.include?(post.id)
+              @posts += [post]
+            end
+          end
+          
+        else
+          redirect_to root_path
+        end
+      when 'email'
+        if current_user.user_role == "2"
+          @posts = Post.where(emailed: false || nil).where(published: true).where('end_date >= ?', Date.today).order(end_date: :asc)
+          @selected_post_ids = params[:selected_post_ids] || []
+        else
+          redirect_to root_path
+        end
       else
         redirect_to root_path
       end
@@ -59,6 +88,82 @@ class PostsController < ApplicationController
         redirect_to root_path
       end
     end
+
+    # def email
+    #   if current_user.user_role == "2"
+    #     params[:post_ids].each do |post_id|
+    #       post = Post.find(post_id)
+    #       post.update(emailed: true)
+    #     end
+    #     redirect_to posts_path, notice: "Posts were successfully emailed."
+    #   else
+    #     redirect_to root_path
+    #   end
+    # end
+    
+
+
+    def save_post_ids
+      if current_user.user_role == "0"
+        @user = User.find(current_user.id)
+        saved_ids = @user.saved_post_ids || []
+        post_id = params[:id].to_i
+        saved_ids << post_id unless saved_ids.include?(post_id)
+        @user.update(saved_post_ids: saved_ids)
+        redirect_to posts_path, notice: "Post was successfully saved."
+      else
+        redirect_to root_path
+      end
+    end
+    
+    def unsave_post_ids
+      if current_user.user_role == "0"
+        @user = User.find(current_user.id)
+        saved_ids = @user.saved_post_ids || []
+        post_id = params[:id].to_i
+        saved_ids.delete(post_id)
+        @user.update(saved_post_ids: saved_ids)
+        redirect_to posts_path, notice: "Post was successfully unsaved."
+      else
+        redirect_to root_path
+      end
+    end
+
+
+    def notifications
+      # find posts that are posted after the last sign in date, check their tags and send notifications to users with at least one matching tags, notification will be a pop down with title and start date of the post and clicking on it will take the user to the show page of the post
+      #  every time a user logs in, check for posts posted after the last sign in date and send notifications to users with matching tags
+      #  if a user has a notification, show a bell icon on the top right corner of the page, clicking on it will show the notifications, also show the number of notifications
+
+      # 1. find posts that are posted after the last sign in date
+      # 2. check their tags
+      # 3. send notifications to users with at least one matching tags
+      # 4. notification will be a pop down of list of posts with title and start date of the post
+      # 5. clicking on it will take the user to the show page of the post
+      # 6. every time a user logs in, check for posts posted after the last sign in date and send notifications to users with matching tags
+      # 7. if a user has a notification, show a bell icon on the top right corner of the page
+      # 8. clicking on it will show the notifications
+      # 9. also show the number of notifications
+
+
+      if current_user.user_role == "0"
+        @notifications = current_user.notification_ids
+        for post in Post.all
+          if post.created_at > current_user.last_sign_in_at
+            for tag in post.tags
+              if current_user.tags.include?(tag)
+                @notifications += [post.id]
+                @notifications = @notifications.uniq
+                current_user.update(notification_ids: @notifications)
+              end
+            end
+          end
+        end
+      else
+        redirect_to root_path
+      end
+    end
+
 
     # GET /posts/1/publish
     def approve

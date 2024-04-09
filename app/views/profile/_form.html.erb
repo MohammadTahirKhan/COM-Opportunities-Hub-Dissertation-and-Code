@@ -1,3 +1,11 @@
 <%= simple_form_for(@user ) do |f| %>
   <div class="card-body">
     <%= f.input :email, label: 'Email', input_html: { value: current_user.email }
+    <%= f.input :full_name, label: 'Full Name', input_html: { value: current_user.full_name }
+    <%= f.input :password, label: 'Password', input_html: { value: current_user.password }
+    <%= f.input :password_confirmation, label: 'Password Confirmation', input_html: { value: current_user.password_confirmation }
+    <%= f.input :tags, label: 'Tags', collection: ['tag1', 'tag2', 'tag3'], as: :check_boxes, input_html: { value: current_user.tags.join(' -') }
+  </div>
+
+  <div class="card-footer d-flex">
+  

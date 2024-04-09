@@ -51,7 +51,8 @@ class Post < ApplicationRecord
     
     validate :recurring_interval_num_cannot_be_negative
     validate :recurring_interval_unit_cannot_be_blank_if_recurring_num_present
-    validate :custom_recurring_info_cannot_be_blank_if_recurring
+    # validate :custom_recurring_info_cannot_be_blank_if_recurring
+    validate :recurring_interval_num_and_recurring_interval_unit_cannot_be_blank_if_recurring
     validates :recurring, inclusion: { in: [true, false] }
 
     def at_least_one_tag
@@ -70,6 +71,14 @@ class Post < ApplicationRecord
         end
     end
 
+    def recurring_interval_num_and_recurring_interval_unit_cannot_be_blank_if_recurring
+        if recurring && (recurring_interval_num.blank? || recurring_interval_unit.blank?)
+            errors.add(:recurring_interval_num, "can't be blank if recurring")
+            errors.add(:recurring_interval_unit, "can't be blank if recurring")
+        end
+    end
+
+
     def custom_recurring_info_cannot_be_blank_if_recurring
         if recurring && custom_recurring_info.blank?
             errors.add(:custom_recurring_info, "can't be blank if recurring")
@@ -77,10 +86,10 @@ class Post < ApplicationRecord
     end
 
     def start_date_and_end_date_cannot_be_in_the_past
-        if start_date < Date.today
+        if start_date.present? && start_date < Date.today
             errors.add(:start_date, "can't be in the past")
         end
-        if end_date < Date.today
+        if end_date.present? && end_date < Date.today
             errors.add(:end_date, "can't be in the past")
         end
 

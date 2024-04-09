@@ -1,0 +1,81 @@
+<div class="card">
+  <div class="card-header d-flex align-items-center">
+    <span>Listing Posts</span>
+    <span>(There are <%= @posts.size %> posts available.)</span>
+    <div class="ms-auto float-end">
+      <% if current_user.user_role == '2' || current_user.user_role == '1' %>
+        <%= link_to 'New Post', new_post_path, class: 'btn btn-outline-secondary ms-auto' %>
+      <% end %>
+      <% if params[:visibility] == 'email' %>
+        <% @selected_post_ids ||= [] %>
+        <%= link_to 'Email', new_email_draft_path(selected_post_ids: @selected_post_ids), class: 'btn btn-primary ms-auto', disabled: @selected_post_ids.empty? || @selected_post_ids.size > 10 || @selected_post_ids.nil? %>
+        <%= link_to 'Clear Selections', posts_path(visibility: params[:visibility]), class: 'btn btn-outline-secondary ms-auto' %>
+        <% end %>
+    </div>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Location</th>
+        <th>Organiser</th>
+        <th>Start Date</th>
+        <th>Start Time</th>
+        <th>Deadline</th>
+        <th>Tags</th>
+        <th>Recurring</th>
+        <% if params[:visibility] == 'history' || (params[:visibility] == 'admin' && current_user.user_role == '2') %>
+          <th>Status</th>
+        <% end %>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @posts.each do |post| %>
+        <tr>
+          <td><%= post.title %></td>
+          <td><%= post.location %></td>
+          <td><%= post.organiser %></td>
+          <td><%= post.start_date if post.start_date.present? %></td>
+          <td><%= post.start_time.to_s(:time) if post.start_time.present? %></td>
+          <td><%= post.deadline %></td>
+          <td><%= post.tags.join(' -') %></td>
+          <% if post.recurring %>
+            <td><%= post.recurring == true ? 'Yes, note: Dates may be inaccurate, please verify by visiting the URL.' : 'No' %></td>
+          <% else %>
+            <td><%= post.recurring == true ? 'Yes' : 'No' %></td>
+          <% end %>
+          <% if params[:visibility] == 'history' %>
+            <td><%= post.published? ? 'Published' : 'Awaiting Approval' %></td>
+          <% end %>
+          <% if params[:visibility] == 'admin' && current_user.user_role == '2' %>
+            <td><%= post.published? ? 'Published' : 'Awaiting Approval' %></td>
+          <% end %>
+          <td>
+            <div class="btn-toolbar float-end">
+              <% if current_user.user_role == '2' && params[:visibility] == 'email' %>
+                  <%= link_to 'Select', add_selected_post_ids_email_drafts_path(post_id: post.id, selected_post_ids: @selected_post_ids), method: :patch, class: 'btn btn-outline-secondary btn-sm' %>
+              <% end %>
+              <% if current_user.user_role == '0' && current_user.saved_post_ids.include?(post.id) %>
+                <%= link_to 'Unsave', unsave_post_ids_post_path(post), method: :patch, class: 'btn btn-outline-secondary btn-sm' %>
+              <% end %>
+              <% if current_user.user_role == '0' && !current_user.saved_post_ids.include?(post.id) %>
+                <%= link_to 'Save', save_post_ids_post_path(post), method: :patch, class: 'btn btn-outline-secondary btn-sm' %>
+              <% end %>
+              <% if !post.published? && current_user.user_role == '2' && params[:visibility] == 'admin' %>
+                <%= link_to 'Approve', approve_post_path(post), method: :patch, class: 'btn btn-outline-secondary btn-sm' %>
+              <% end %>
+              <%= link_to 'Show', post, class: 'btn btn-outline-secondary btn-sm' %>
+              <% if (current_user.email == post.email && post.end_date.present? && post.end_date > Date.today) || current_user.user_role == '2' %>
+                <%= link_to 'Edit', edit_post_path(post), class: 'btn btn-outline-secondary ms-1 btn-sm' %>
+                <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger ms-1 btn-sm' %>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+

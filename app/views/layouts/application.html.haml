@@ -50,18 +50,31 @@
               - if current_user.user_role == "1" || current_user.user_role == "2"
                 = link_to posts_path(visibility:'history'), class: 'nav-link' do
                   %i.bi-clock-history
-                  History
+                  My History
+              - if current_user.user_role == "0"
+                = link_to posts_path(visibility:'saved'), class: 'nav-link' do
+                  %i.bi-bookmark
+                  Saved
               - if current_user.user_role == "2"
                 = link_to posts_path(visibility:'admin'), class: 'nav-link' do
                   %i.bi-hourglass-split
                   Pending
               - if current_user.user_role == "2"
-                = link_to '/', class: 'nav-link' do
+                = link_to posts_path(visibility:'email'), class: 'nav-link' do
                   %i.bi-file-earmark-text
                   Email
               
 
+              -# notifcation bell
+              -# -if current_user.user_role == "0"
+              -#   = link_to 'posts/notifications', class: 'nav-link'
+              -#     -# -@notifications.each do |notification|
+              -#     -#   -if Post.find(notification).created_at > current_user.last_sign_in_at
+              -#     -#     %i.bi-bell-fill
+              -#     Notifications
+              
               -# %nav.navbar-nav.ms-auto
+            - if user_signed_in?
               Logged in as #{ current_user.email }
               = link_to 'Sign out', destroy_user_session_path, method: :delete, class: 'nav-link'
             - else

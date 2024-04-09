@@ -7,10 +7,12 @@
 #  encrypted_password     :string(100)
 #  full_name              :string
 #  last_sign_in_at        :datetime
+#  notification_ids       :bigint           default([]), is an Array
 #  provider               :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
+#  saved_post_ids         :bigint           default([]), is an Array
 #  tags                   :string           default([]), is an Array
 #  uid                    :string
 #  user_role              :string
