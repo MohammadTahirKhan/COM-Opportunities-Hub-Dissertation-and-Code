@@ -1,0 +1,23 @@
+-# show all the users
+.card
+  .card-header.d-flex.align-items-center
+    %span Listing Users
+
+  %table.table
+    %thead
+      %tr
+        %th id
+        %th Email
+        %th Role
+    %tbody
+      - @users.each do |user|
+        %tr
+          %td= user.id
+          %td= user.email
+          %td= user.user_role == '0' ? 'User' : user.user_role == '1' ? 'Poster' : 'Admin'
+          %td
+            .btn-toolbar.float-end
+
+              = link_to 'Edit', edit_admin_path(user), class: 'btn btn-outline-secondary ms-1 btn-sm' if user != current_user
+              - if user != current_user && user.user_role == 'user'
+                = link_to 'Delete', admin_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-secondary ms-1 btn-sm'

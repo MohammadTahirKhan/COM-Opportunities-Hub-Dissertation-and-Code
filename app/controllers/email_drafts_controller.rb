@@ -3,7 +3,6 @@ class EmailDraftsController < ApplicationController
     def new
       @selected_posts = Post.where(id: params[:selected_post_ids])
       # print @selected_posts
-      flash[:alert] = "You can select up to 10 posts." if @selected_posts.size > 0
       flash[:alert] = "You must select at least one post." if @selected_posts.size == 0
       @default_text = generate_default_text(@selected_posts)
       if @selected_posts.size > 0 

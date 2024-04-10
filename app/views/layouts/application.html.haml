@@ -63,6 +63,14 @@
                 = link_to posts_path(visibility:'email'), class: 'nav-link' do
                   %i.bi-file-earmark-text
                   Email
+              - if current_user.user_role == "2"
+                = link_to admin_index_path, class: 'nav-link' do
+                  %i.bi-nut
+                  Admin
+
+              = link_to profile_index_path, class: 'nav-link' do
+                %i.bi-person-fill
+                Profile
               
 
               -# notifcation bell

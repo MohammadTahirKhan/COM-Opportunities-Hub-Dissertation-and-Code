@@ -1,44 +1,33 @@
 class AdminController < ApplicationController
-  def index
-    @posts= Post.where(published: false)
+  before_action :authenticate_user!
+  before_action :require_admin
+
+  def require_admin
+    unless current_user.user_role == "2"
+      redirect_to root_path
+    end
   end
 
-    def show
-    end
+  def index
+    @users = User.all
+  end
 
-    def edit
-    end
+  def edit
+    @user = User.find(params[:id])
+  end
 
-    def destroy
-        @post.destroy
-        redirect_to admin_index_path, notice: "Post was successfully deleted."
-    end
+  def update
+    user = User.find(params[:id])
+    user_params = params.require(:user).permit(:user_role)
+    user.update(user_params)
+    redirect_to admin_index_path
+  end
 
-    def approve
-        @post = Post.find(params[:id])
-        @post.update(published: true)
-        redirect_to admin_index_path, notice: "Post was successfully approved."
-    end
+  def destroy
+    user = User.find(params[:id])
+    user.destroy
 
-    def update
-        if @post.update(post_params)
-            redirect_to admin_index_path, notice: "Post was successfully updated."
-        else
-            render :edit, status: :unprocessable_entity
-        end
-    end
-
-  
-    private
-      # Use callbacks to share common setup or constraints between actions.
-      def set_posts
-          @post = Post.find(params[:id])
-        
-      end
-  
-      
-      # Only allow a list of trusted parameters through.
-      def post_params
-        params.require(:post).permit!
-      end
+    redirect_to admin_index_path
+  end
+    
 end

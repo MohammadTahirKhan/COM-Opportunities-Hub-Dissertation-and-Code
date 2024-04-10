@@ -1,38 +1,28 @@
 .card
   .card-header.d-flex.align-items-center
-    %span Listing Posts
-    %span (There are #{@posts.size} posts available.)
-    .ms-auto.float-end
-      -if current_user.user_role == '2' || current_user.user_role == '1'
-        = link_to 'New Post', new_post_path, class: 'btn btn-outline-secondary ms-auto'
-
-  %table.table
-    %thead
-      %tr
-        %th Title
-        %th Location
-        %th Organiser
-        %th Start Date
-        %th Start Time
-        %th Deadline
-        %th Tags
-        %th Recurring
-        %th
-    %tbody
-      - @posts.each do |post|
-        %tr
-          %td= post.title
-          %td= post.location
-          %td= post.organiser
-          %td= post.start_date if post.start_date.present?
-          %td= post.start_time.to_s(:time) if post.start_time.present?
-          %td= post.deadline
-          %td= post.tags.join(' -')
-          %td= post.recurring
-          %td
-            .btn-toolbar.float-end
-              = link_to 'Show', post, class: 'btn btn-outline-secondary btn-sm'
-              -if (current_user.email == post.email && post.end_date.present? && post.end_date > Date.today) || current_user.user_role == '2'
-                = link_to 'Edit', edit_post_path(post), class: 'btn btn-outline-secondary ms-1 btn-sm'
-              -if (current_user.email == post.email && post.end_date.present? && post.end_date > Date.today) || current_user.user_role == '2'
-                = link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger ms-1 btn-sm'
+    %span User detail 
+  .card-body
+    %p
+      %strong Email:
+      = @user.email
+    %p
+      %strong Full Name:
+      = @user.full_name
+    %p
+      %strong Role:
+      = @user.user_role == '0' ? 'User' : @user.user_role == '1' ? 'Poster' : 'Admin'
+    %p
+      %strong Created at:
+      = @user.created_at
+    %p
+      %strong Updated at:
+      = @user.updated_at
+    %p
+      %strong password:
+      ********
+    %p
+      %strong tags:
+      = @user.tags.join(' -')
+  .card-footer.d-flex
+    = link_to 'Edit', edit_profile_path(@user), class: 'btn btn-outline-secondary'
+    = link_to 'Back', posts_path, class: 'btn btn-link ms-auto'

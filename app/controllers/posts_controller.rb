@@ -18,7 +18,9 @@ class PostsController < ApplicationController
             if post.recurring_interval_num.present? && post.recurring_interval_unit.present?
               post.update(start_date: post.start_date + post.recurring_interval_num.send(post.recurring_interval_unit))
               post.update(end_date: post.end_date + post.recurring_interval_num.send(post.recurring_interval_unit))
-              post.update(deadline: post.deadline + post.recurring_interval_num.send(post.recurring_interval_unit))
+              if post.deadline.present?
+                post.update(deadline: post.deadline + post.recurring_interval_num.send(post.recurring_interval_unit))
+              end
             end
           end
         end

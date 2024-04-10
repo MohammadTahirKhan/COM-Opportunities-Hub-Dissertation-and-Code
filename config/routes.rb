@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  
   resources :posts do
     member do
       patch :approve
@@ -16,6 +17,9 @@ Rails.application.routes.draw do
       patch :remove_selected_post_ids
     end
   end
+
+  resources :admin, only: %i[index edit update destroy]
+  resources :profile, only: %i[index show edit update destroy]
   
 
 

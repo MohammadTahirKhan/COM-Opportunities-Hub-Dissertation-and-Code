@@ -23,7 +23,7 @@
 
     <div id="recurring-interval-container" class="hidden">
       <%= f.input :recurring_interval_num, label: 'If recurring, then Recurring Interval', input_html: { id: 'recurring-interval-field' } %>
-      <%= f.input :recurring_interval_unit, label: 'If recurring, then Interval Unit', as: :select, collection: ['days', 'weeks', 'months'], input_html: { id: 'recurring-interval-unit-field' } %>
+      <%= f.input :recurring_interval_unit, label: 'If recurring, then Interval Unit', as: :select, collection: ['weeks', 'months'], input_html: { id: 'recurring-interval-unit-field' } %>
     </div>
 
     <div id="custom-recurring-info-container" class="hidden">

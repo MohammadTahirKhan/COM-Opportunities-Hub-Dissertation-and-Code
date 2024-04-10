@@ -1,11 +1,30 @@
-<%= simple_form_for(@user ) do |f| %>
-  <div class="card-body">
-    <%= f.input :email, label: 'Email', input_html: { value: current_user.email }
-    <%= f.input :full_name, label: 'Full Name', input_html: { value: current_user.full_name }
-    <%= f.input :password, label: 'Password', input_html: { value: current_user.password }
-    <%= f.input :password_confirmation, label: 'Password Confirmation', input_html: { value: current_user.password_confirmation }
-    <%= f.input :tags, label: 'Tags', collection: ['tag1', 'tag2', 'tag3'], as: :check_boxes, input_html: { value: current_user.tags.join(' -') }
+<%= form_for @user, url: profile_path(@user) do |f| %>
+  <div class="card-header d-flex align-items-center">
+    <div class="card-body">
+      <%= f.label :email %>
+      <%= f.email_field :email, class: 'form-control', value: @user.email %>
+
+      <%= f.label :full_name %>
+      <%= f.text_field :full_name, class: 'form-control', value: @user.full_name %>
+
+      <%= f.label :password %>
+      <%= f.password_field :password, class: 'form-control' %>
+
+      <%= f.label :password_confirmation %>
+      <%= f.password_field :password_confirmation, class: 'form-control' %>
+    
+      <%= f.label :tags %>
+      <% ['tag1', 'tag2', 'tag3', 'tag4', 'tag5'].each do |tag| %>
+        <div class="form-check">
+          <%= check_box_tag 'user[tags][]', tag, @user.tags.include?(tag), class: 'form-check-input', id: "user_tags_#{tag}" %>
+          <%= label_tag "user_tags_#{tag}", tag, class: 'form-check-label' %>
+        </div>
+      <% end %>
+    </div>
   </div>
 
   <div class="card-footer d-flex">
-  
+    <%= f.submit 'Update', class: 'btn btn-primary' %>
+    <%= link_to 'Back', posts_path, class: 'btn btn-link ms-auto' %>
+  </div>
+<% end %>
