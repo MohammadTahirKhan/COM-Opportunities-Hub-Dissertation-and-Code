@@ -20,8 +20,9 @@
           %strong password:
           = @user.password
         %p
-          %strong tags:
-          = @user.tags.join(' -')
+          -if @user.user_role == '0'
+            %strong tags:
+            = @user.tags.join(' -')
       .card-footer.d-flex
         = link_to 'Edit', edit_admin_path(@user), class: 'btn btn-outline-secondary'
         = link_to 'Back', admin_index_path, class: 'btn btn-link ms-auto'

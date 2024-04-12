@@ -25,6 +25,17 @@ class PostsController < ApplicationController
           end
         end
       end
+
+      Post.all.each do |post|
+        if (current_user.last_sign_in_at.present? && post.created_at > current_user.last_sign_in_at) || current_user.last_sign_in_at.blank?
+          if current_user.user_role == "0"
+            if current_user.tags.present? && post.tags.present? && (current_user.tags & post.tags).any? && post.published == true && post.end_date >= Date.today && current_user.unread_notification_ids.include?(post.id) == false && current_user.read_notification_ids.include?(post.id) == false
+              current_user.update(unread_notification_ids: current_user.unread_notification_ids + [post.id])
+              current_user.update(read_notification_ids: current_user.read_notification_ids + [post.id])
+            end
+          end
+        end
+      end
       @visibility = params[:visibility]
       case @visibility
       when 'upcoming'
@@ -69,6 +80,22 @@ class PostsController < ApplicationController
         if current_user.user_role == "2"
           @posts = Post.where(emailed: false || nil).where(published: true).where('end_date >= ?', Date.today).order(end_date: :asc)
           @selected_post_ids = params[:selected_post_ids] || []
+        else
+          redirect_to root_path
+        end
+
+      when 'notifications'
+        if current_user.user_role == "0"
+          mark_as_read
+          @posts = []
+          for post in Post.all
+            if current_user.unread_notification_ids.include?(post.id) || current_user.read_notification_ids.include?(post.id)
+              @posts += [post]
+            end
+          end
+          @posts = @posts.uniq
+          @posts = @posts.sort_by { |post| post.created_at }.reverse
+          
         else
           redirect_to root_path
         end
@@ -132,38 +159,17 @@ class PostsController < ApplicationController
     end
 
 
-    def notifications
-      # find posts that are posted after the last sign in date, check their tags and send notifications to users with at least one matching tags, notification will be a pop down with title and start date of the post and clicking on it will take the user to the show page of the post
-      #  every time a user logs in, check for posts posted after the last sign in date and send notifications to users with matching tags
-      #  if a user has a notification, show a bell icon on the top right corner of the page, clicking on it will show the notifications, also show the number of notifications
-
-      # 1. find posts that are posted after the last sign in date
-      # 2. check their tags
-      # 3. send notifications to users with at least one matching tags
-      # 4. notification will be a pop down of list of posts with title and start date of the post
-      # 5. clicking on it will take the user to the show page of the post
-      # 6. every time a user logs in, check for posts posted after the last sign in date and send notifications to users with matching tags
-      # 7. if a user has a notification, show a bell icon on the top right corner of the page
-      # 8. clicking on it will show the notifications
-      # 9. also show the number of notifications
-
-
+    def mark_as_read
       if current_user.user_role == "0"
-        @notifications = current_user.notification_ids
-        for post in Post.all
-          if post.created_at > current_user.last_sign_in_at
-            for tag in post.tags
-              if current_user.tags.include?(tag)
-                @notifications += [post.id]
-                @notifications = @notifications.uniq
-                current_user.update(notification_ids: @notifications)
-              end
-            end
-          end
+        @user = User.find(current_user.id)
+        if @user.unread_notification_ids.present? && @user.read_notification_ids.size > 0
+          @user.update(unread_notification_ids: [])
+          flash[:notice] = "Notifications were successfully marked as read."
         end
       else
         redirect_to root_path
       end
+
     end
 
 
@@ -244,7 +250,10 @@ class PostsController < ApplicationController
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_posts
-          @post = Post.find(params[:id])
+          @post = Post.find(params[:id]) if Post.exists?(params[:id])
+          if @post.nil?
+            redirect_to root_path
+          end
         
       end
   

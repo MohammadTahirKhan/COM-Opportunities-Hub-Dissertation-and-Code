@@ -25,7 +25,7 @@
           %dt.col-sm-3 Deadline
           %dd.col-sm-9= @post.deadline
           %dt.col-sm-3 URL
-          %dd.col-sm-9= @post.url
+          %dd.col-sm-9= link_to @post.url, @post.url
           -if @post.tags.present?
             %dt.col-sm-3 Tags
             %dd.col-sm-9= @post.tags.join(' -')

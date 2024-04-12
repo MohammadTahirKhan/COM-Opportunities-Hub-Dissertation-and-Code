@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+  
   def new
   end
 
@@ -16,6 +17,7 @@ class SessionsController < ApplicationController
   
   def destroy
     session[:user_id] = nil
+    User.update(current_user.id, last_sign_in_at: Time.now)
     redirect_to root_path, notice: "Logged out successfully"
   end
 

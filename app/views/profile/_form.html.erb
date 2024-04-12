@@ -12,13 +12,15 @@
 
       <%= f.label :password_confirmation %>
       <%= f.password_field :password_confirmation, class: 'form-control' %>
-    
-      <%= f.label :tags %>
-      <% ['tag1', 'tag2', 'tag3', 'tag4', 'tag5'].each do |tag| %>
-        <div class="form-check">
-          <%= check_box_tag 'user[tags][]', tag, @user.tags.include?(tag), class: 'form-check-input', id: "user_tags_#{tag}" %>
-          <%= label_tag "user_tags_#{tag}", tag, class: 'form-check-label' %>
-        </div>
+
+      <% if @user.user_role == '0' %>
+        <%= f.label :tags %>
+        <% ['tag1', 'tag2', 'tag3', 'tag4', 'tag5'].each do |tag| %>
+          <div class="form-check">
+            <%= check_box_tag 'user[tags][]', tag, @user.tags.include?(tag), class: 'form-check-input', id: "user_tags_#{tag}" %>
+            <%= label_tag "user_tags_#{tag}", tag, class: 'form-check-label' %>
+          </div>
+        <% end %>
       <% end %>
     </div>
   </div>

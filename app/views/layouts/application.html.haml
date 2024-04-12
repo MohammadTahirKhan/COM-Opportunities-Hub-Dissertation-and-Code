@@ -1,7 +1,7 @@
 !!!
 %html{ lang: 'en-GB' }
   %head
-    %title Project
+    %title Com Opportunities
 
     %meta{ :'http-equiv' => "content-type", content: "text/html; charset=utf-8" }
     %meta{ :'http-equiv' => 'X-UA-Compatible', content: 'IE=edge' }
@@ -10,7 +10,7 @@
     - if content_for(:description)
       %meta{ content: content_for(:description), name: 'description' }
 
-    %title= ["Project", content_for(:title)].compact.join(' - ')
+    %title= ["Com Opportunities", content_for(:title)].compact.join(' - ')
 
     = csrf_meta_tags
     = csp_meta_tag
@@ -27,7 +27,7 @@
           %span.navbar-toggler-icon
         #navbar-content.navbar-collapse.collapse
           %nav.navbar-nav
-            = link_to '/', class: 'active nav-link' do
+            = link_to '/', class: 'nav-link' do
               %i.bi-house-fill
               Home
             - if user_signed_in?
@@ -67,6 +67,12 @@
                 = link_to admin_index_path, class: 'nav-link' do
                   %i.bi-nut
                   Admin
+              - if current_user.user_role == "0" 
+                = link_to posts_path(visibility:'notifications'), class: 'nav-link' do
+                  %i.bi-bell-fill
+                  -if current_user.unread_notification_ids.count > 0
+                    %span.badge.bg-danger
+                      = current_user.unread_notification_ids.count
 
               = link_to profile_index_path, class: 'nav-link' do
                 %i.bi-person-fill

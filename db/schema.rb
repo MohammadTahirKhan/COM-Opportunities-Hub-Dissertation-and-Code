@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_08_150041) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_11_144233) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -75,7 +75,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_08_150041) do
     t.string "tags", default: [], array: true
     t.bigint "saved_post_ids", default: [], array: true
     t.datetime "last_sign_in_at"
-    t.bigint "notification_ids", default: [], array: true
+    t.bigint "unread_notification_ids", default: [], array: true
+    t.bigint "read_notification_ids", default: [], array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
