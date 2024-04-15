@@ -1,10 +1,12 @@
 <!-- app/views/email_drafts/new.html.erb -->
-<h1>New Email Draft</h1>
-<div>
-  <textarea id="draft-text" class="form-control" rows="10"><%= @default_text %></textarea>
-</div>
-<div>
-  <button id="copy-button" class="btn btn-primary">Copy Draft</button>
+<div style="margin: 20px;">
+  <h1>New Email Draft</h1>
+  <div>
+    <textarea id="draft-text" class="form-control" rows="10"><%= @default_text %></textarea>
+  </div>
+  <div>
+    <button style="margin-top: 10px;", id="copy-button" class="btn btn-primary">Copy Draft</button>
+  </div>
 </div>
 
 <script>

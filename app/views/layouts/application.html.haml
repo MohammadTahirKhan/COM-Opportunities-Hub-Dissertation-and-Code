@@ -22,8 +22,8 @@
     %header.navbar.navbar-expand-lg.bg-light.mb-3
       .container-fluid
         = link_to '#', class: 'navbar-brand' do
-          = image_pack_tag 'images/logo.png', height: 40
-        %button.navbar-toggler{ type: :button, data: { bs_toggle: :collapse, bs_target: '#navbar-content' }, aria: { controls: 'navbar-content', expanded: 'false', label: 'Toggle navigation' } }
+          = image_pack_tag 'images/logo.png', height: 40, alt: 'Com Opportunities', class: 'd-inline-block align-top'
+        %button.navbar-toggler{ type: :button, data: { bs_toggle: :collapse, bs_target: '#navbar-content' }, aria: { controls: 'navbar-content', expanded: 'true', label: 'Toggle navigation' } }
           %span.navbar-toggler-icon
         #navbar-content.navbar-collapse.collapse
           %nav.navbar-nav
@@ -78,18 +78,7 @@
                 %i.bi-person-fill
                 Profile
               
-
-              -# notifcation bell
-              -# -if current_user.user_role == "0"
-              -#   = link_to 'posts/notifications', class: 'nav-link'
-              -#     -# -@notifications.each do |notification|
-              -#     -#   -if Post.find(notification).created_at > current_user.last_sign_in_at
-              -#     -#     %i.bi-bell-fill
-              -#     Notifications
-              
-              -# %nav.navbar-nav.ms-auto
             - if user_signed_in?
-              Logged in as #{ current_user.email }
               = link_to 'Sign out', destroy_user_session_path, method: :delete, class: 'nav-link'
             - else
               = link_to 'Sign in', new_user_session_path, class: 'nav-link'

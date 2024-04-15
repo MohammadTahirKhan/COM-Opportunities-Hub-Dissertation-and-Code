@@ -104,17 +104,50 @@ class PostsController < ApplicationController
       end
     end
 
-  
-    # GET /posts/1
-    def show
-    end
-  
-    # GET /posts/new
     def new
       if current_user.user_role == "1" || current_user.user_role == "2"
         @post = Post.new
       else
         redirect_to root_path
+      end
+    end
+
+  
+    # GET /posts/1
+    def show
+    end
+
+    def search
+      if params[:visibility] == "upcoming"
+        @posts = Post.where("title LIKE ?","%#{params[:search]}%").where('end_date >= ?', Date.today).where(published: true).order(end_date: :asc)
+      elsif params[:visibility] == "recent"
+        @posts = Post.where("title LIKE ?","%#{params[:search]}%").where('end_date < ?', Date.today).where(published: true).order(end_date: :asc)
+      elsif params[:visibility] == "archives"
+        @posts = Post.where("title LIKE ?","%#{params[:search]}%").where('end_date < ?', Date.today - 1.year).where(published: true).order(end_date: :asc)
+      elsif params[:visibility] == "history"
+        @posts = Post.where("title LIKE ?","%#{params[:search]}%").where(email: current_user.email).order(end_date: :asc)
+      elsif params[:visibility] == "admin"
+        @posts = Post.where("title LIKE ?","%#{params[:search]}%").where(published: false).order(end_date: :asc)
+      elsif params[:visibility] == "saved"
+        @posts = []
+        for post in Post.all
+          if current_user.saved_post_ids.include?(post.id) && post.title.include?(params[:search])
+            @posts += [post]
+          end
+        end
+      elsif params[:visibility] == "email"
+        @posts = Post.where("title LIKE ?","%#{params[:search]}%").where(emailed: false || nil).where(published: true).where('end_date >= ?', Date.today).order(end_date: :asc)
+        @selected_post_ids = params[:selected_post_ids] || []
+      elsif params[:visibility] == "notifications"
+        mark_as_read
+        @posts = []
+        for post in Post.all
+          if current_user.unread_notification_ids.include?(post.id) || current_user.read_notification_ids.include?(post.id)
+            @posts += [post]
+          end
+        end
+        @posts = @posts.uniq
+        @posts = @posts.sort_by { |post| post.created_at }.reverse
       end
     end
 

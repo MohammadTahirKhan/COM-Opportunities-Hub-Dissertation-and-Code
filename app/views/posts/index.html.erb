@@ -1,101 +1,110 @@
 <% if params[:visibility] == 'notifications' %>
-  <div class="notification-dropdown">
-    <% @posts.each do |post| %>
-      <div class="notification-item">
-        <h6><%= post.title %></h6>
-        <p>Start Date: <%= post.start_date %></p>
-        <p>Organiser: <%= post.organiser %></p>
-        <p>Availability: <%= post.end_date.present? && post.end_date >= Date.today ? 'Available' : 'Not Available' %></p>
-        <div class="notification-actions">
-          <%= link_to 'Show', post, class: 'btn btn-primary btn-sm' %>
-          <%= link_to 'Save', save_post_ids_post_path(post), method: :patch, class: 'btn btn-secondary btn-sm' %>
+  <div class="card">
+    <div class="card-header d-flex align-items-center">
+      <span>Listing notifications</span>
+    </div>
+    <div class="notification-dropdown">
+      <% @posts.each do |post| %>
+        <div class="notification-item d-flex">
+          <div class="notification-content flex-grow-1">
+            <h2 class="notification-title"><%= post.title %></h2>
+            <div class="details">
+              <p>There is a new post available for you that you may be interested in. Please click Show to view the details.</p>
+            </div>
+          </div>
+          <div class="button-actions">
+            <%= link_to 'Show', post, class: 'btn btn-outline-secondary btn-sm' %>
+            <%= link_to 'Save', save_post_ids_post_path(post), method: :patch, class: 'btn btn-outline-secondary btn-sm' %>
+          </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
 <% else %>
   <div class="card">
     <div class="card-header d-flex align-items-center">
-      <span>Listing Posts</span>
-      <span>(There are <%= @posts.size %> posts available.)</span>
-      <div class="ms-auto float-end">
+      <% if params[:visibility] == 'email' %>
+        <span>Listing Posts Waiting to be Emailed (There are <%= @posts.size %> posts available.)</span>
+      <% elsif params[:visibility] == 'history' %>
+        <span>Listing Posts You've Posted (There are <%= @posts.size %> posts available.)</span>
+      <% elsif params[:visibility] == 'saved' %>
+        <span>Listing Posts You've Saved (There are <%= @posts.size %> posts available.)</span>
+      <% elsif params[:visibility] == 'admin' %>
+        <span>Listing Posts Awaiting Approval (There are <%= @posts.size %> posts available.)</span>
+      <% elsif params[:visibility] == 'upcoming' %>
+        <span>Listing Upcoming Posts (There are <%= @posts.size %> posts available.)</span>
+      <% elsif params[:visibility] == 'archives' %>
+        <span>Listing Archived Posts (There are <%= @posts.size %> posts available.)</span>
+      <% elsif params[:visibility] == 'recent' %>
+        <span>Listing Recent Posts (There are <%= @posts.size %> posts available.)</span>
+      <% else %>
+        <span>Listing All Posts (There are <%= @posts.size %> posts available.)</span>
+      <% end %>
+      <div class="actions", style="margin-left: auto;, float: right; align-items: center;" justify-content: center;>
         <% if current_user.user_role == '2' || current_user.user_role == '1' %>
-          <%= link_to 'New Post', new_post_path, class: 'btn btn-outline-secondary ms-auto' %>
+          <%= link_to 'New Post', new_post_path, class: 'btn btn-outline-secondary', style: 'width: 100px; margin: 3px; float: inline-end;' %>
         <% end %>
         <% if params[:visibility] == 'email' %>
           <% @selected_post_ids ||= [] %>
-          <%= link_to 'Email', new_email_draft_path(selected_post_ids: @selected_post_ids), class: 'btn btn-primary ms-auto', disabled: @selected_post_ids.empty? || @selected_post_ids.size > 10 || @selected_post_ids.nil? %>
-          <%= link_to 'Clear Selections', posts_path(visibility: params[:visibility]), class: 'btn btn-outline-secondary ms-auto' %>
-          <% end %>
+          <%= link_to 'Email', new_email_draft_path(selected_post_ids: @selected_post_ids), class: 'btn btn-primary', disabled: @selected_post_ids.empty? || @selected_post_ids.size > 10 || @selected_post_ids.nil?, style: 'width: 100px; margin: 3px; float: inline-end;' %>
+          <%= link_to 'Clear Selections', posts_path(visibility: params[:visibility]), class: 'btn btn-outline-secondary', style: 'width: 138px; margin: 3px; float: inline-end;' %>
+        <% end %>
       </div>
     </div>
 
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Organiser</th>
-          <th>Start Date</th>
-          <th>Start Time</th>
-          <th>Deadline</th>
-          <th>Tags</th>
-          <th>Recurring</th>
-          <% if params[:visibility] == 'history' || (params[:visibility] == 'admin' && current_user.user_role == '2') %>
-            <th>Status</th>
+    <div class="post-table">
+      <table class="table">
+        <tbody>
+          <% @posts.each do |post| %>
+            <tr>
+              <td>
+                <div class="post-item">
+                  <h4><%= post.title %>, <%= post.start_date %> <%= post.start_time.to_s(:time) if post.start_time.present? %></h4>
+                  <div class="details">
+                    <p><strong>Location:</strong> <%= post.location %></p>
+                    <p><strong>Description:</strong> <%= post.description %></p>
+                    <p class="tags"><strong>Tags:</strong> <%= post.tags.join(' -') %></p>
+                    <p><strong>URL:</strong> <%= link_to post.url, post.url %></p>
+                    <% if post.recurring %>
+                      <p class="recurring">Recurring</p>
+                      <p>Recurring Interval: <%= post.recurring_interval_num %> <%= post.recurring_interval_unit %></p>
+                      <p>Custom Recurring Info: <%= post.custom_recurring_info.present? ? post.custom_recurring_info : 'None' %></p>
+                      <p>Note: Dates may be inaccurate due to recurring nature. Verify details through URL.</p>
+                    <% end %>
+                    <% if params[:visibility] == 'notifications' || params[:visibility] == 'saved' %>
+                      <p class="<%= post.end_date.present? && post.end_date >= Date.today ? 'available' : 'not-available' %>"><%= post.end_date.present? && post.end_date >= Date.today ? 'Available' : 'Not Available' %></p>
+                    <% end %>
+                    <% if params[:visibility] == 'history' || (params[:visibility] == 'admin' && current_user.user_role == '2') %>
+                      <p class="<%= post.published? ? 'published' : 'awaiting-approval' %>"><%= post.published? ? 'Published' : 'Awaiting Approval' %></p>
+                    <% end %>
+                  </div>
+                </div>
+              </td>
+              <td class="button-column">
+                <div class="button-actions">
+                  <% if current_user.user_role == '2' && params[:visibility] == 'email' %>
+                      <%= link_to 'Select', add_selected_post_ids_email_drafts_path(post_id: post.id, selected_post_ids: @selected_post_ids), method: :patch, class: 'btn btn-outline-secondary' %>
+                  <% end %>
+                  <% if current_user.user_role == '0' && current_user.saved_post_ids.include?(post.id) %>
+                    <%= link_to 'Unsave', unsave_post_ids_post_path(post), method: :patch, class: 'btn btn-outline-secondary' %>
+                  <% end %>
+                  <% if current_user.user_role == '0' && !current_user.saved_post_ids.include?(post.id) %>
+                    <%= link_to 'Save', save_post_ids_post_path(post), method: :patch, class: 'btn btn-outline-secondary' %>
+                  <% end %>
+                  <% if !post.published? && current_user.user_role == '2' && params[:visibility] == 'admin' %>
+                    <%= link_to 'Approve', approve_post_path(post), method: :patch, class: 'btn btn-outline-secondary' %>
+                  <% end %>
+                  <%= link_to 'Show', post, class: 'btn btn-outline-secondary' %>
+                  <% if (current_user.email == post.email && post.end_date.present? && post.end_date > Date.today) || current_user.user_role == '2' %>
+                    <%= link_to 'Edit', edit_post_path(post), class: 'btn btn-outline-secondary' %>
+                    <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger' %>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
           <% end %>
-          <% if params[:visibility] == 'notifications' || params[:visibility] == 'saved' %>
-            <th>Available?</th>
-          <% end %>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @posts.each do |post| %>
-          <tr>
-            <td><%= post.title %></td>
-            <td><%= post.organiser %></td>
-            <td><%= post.start_date if post.start_date.present? %></td>
-            <td><%= post.start_time.to_s(:time) if post.start_time.present? %></td>
-            <td><%= post.deadline %></td>
-            <td><%= post.tags.join(' -') %></td>
-            <% if post.recurring %>
-              <td><%= post.recurring == true ? 'Yes, note: Dates may be inaccurate, please verify by visiting the URL.' : 'No' %></td>
-            <% else %>
-              <td><%= post.recurring == true ? 'Yes' : 'No' %></td>
-            <% end %>
-            <% if params[:visibility] == 'notifications' || params[:visibility] == 'saved' %>
-              <td><%= post.end_date.present? && post.end_date >= Date.today ? 'Yes, Check details for confirmation' : 'No' %></td>
-            <% end %>
-            <% if params[:visibility] == 'history' %>
-              <td><%= post.published? ? 'Published' : 'Awaiting Approval' %></td>
-            <% end %>
-            <% if params[:visibility] == 'admin' && current_user.user_role == '2' %>
-              <td><%= post.published? ? 'Published' : 'Awaiting Approval' %></td>
-            <% end %>
-            <td>
-              <div class="btn-toolbar float-end">
-                <% if current_user.user_role == '2' && params[:visibility] == 'email' %>
-                    <%= link_to 'Select', add_selected_post_ids_email_drafts_path(post_id: post.id, selected_post_ids: @selected_post_ids), method: :patch, class: 'btn btn-outline-secondary btn-sm' %>
-                <% end %>
-                <% if current_user.user_role == '0' && current_user.saved_post_ids.include?(post.id) %>
-                  <%= link_to 'Unsave', unsave_post_ids_post_path(post), method: :patch, class: 'btn btn-outline-secondary btn-sm' %>
-                <% end %>
-                <% if current_user.user_role == '0' && !current_user.saved_post_ids.include?(post.id) %>
-                  <%= link_to 'Save', save_post_ids_post_path(post), method: :patch, class: 'btn btn-outline-secondary btn-sm' %>
-                <% end %>
-                <% if !post.published? && current_user.user_role == '2' && params[:visibility] == 'admin' %>
-                  <%= link_to 'Approve', approve_post_path(post), method: :patch, class: 'btn btn-outline-secondary btn-sm' %>
-                <% end %>
-                <%= link_to 'Show', post, class: 'btn btn-outline-secondary btn-sm' %>
-                <% if (current_user.email == post.email && post.end_date.present? && post.end_date > Date.today) || current_user.user_role == '2' %>
-                  <%= link_to 'Edit', edit_post_path(post), class: 'btn btn-outline-secondary ms-1 btn-sm' %>
-                  <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-outline-danger ms-1 btn-sm' %>
-                <% end %>
-              </div>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 <% end %>

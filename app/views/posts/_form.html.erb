@@ -8,9 +8,9 @@
     <label for="end_date">End Date</label>
     <%= f.date_field :end_date, id: "post_end_date", class: "form-control", required: true %>
     <label for="start_time">Start Time</label>
-    <%= f.time_field :start_time, label: 'Start Time', as: :time, hint: 'Optional' %>
+    <%= f.time_field :start_time, label: 'Start Time', as: :time, hint: 'Optional', style: 'margin: 15px;' %>
     <label for="end_time">End Time</label>
-    <%= f.time_field :end_time, id: "end_time", as: :time, placeholder: "Optional" %>
+    <%= f.time_field :end_time, id: "end_time", as: :time, placeholder: "Optional", style: 'margin: 15px;' %>
     <%= f.input :organiser, label: 'Organiser' %>
     <%= f.input :description, label: 'Description', as: :text %>
 
@@ -18,7 +18,7 @@
     <%= f.date_field :deadline, id: "post_deadline", class: "form-control", placeholder: "Optional" %>
 
     <%= f.input :url, label: 'URL', hint: 'Optional' %>
-    <%= f.input :tags, label: 'Tags', collection: ['tag1', 'tag2', 'tag3'], as: :check_boxes %>
+    <%= f.input :tags, label: 'Tags', collection: ['AI', 'ML', 'Data Science', 'Software', 'IOT', 'Industry event', 'Job opportunity'], as: :check_boxes, input_html: { id: 'tag-field' } %>
     <%= f.input :recurring, label: 'Recurring', as: :select, collection: [['No', false], ['Yes', true]], input_html: { id: 'recurring-field' } %>
 
     <div id="recurring-interval-container" class="hidden">

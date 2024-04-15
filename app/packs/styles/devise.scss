@@ -1,0 +1,209 @@
+/* Forgot password form container */
+.forgot-password-form-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 3%;
+}
+
+/* Form label */
+.form-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* Form group (wrapper for input field) */
+.form-group {
+  // margin-top: 15%;
+  margin-bottom: 10px;
+}
+
+/* Form input field */
+.form-group input[type="email"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 5px;
+}
+
+/* Submit button */
+.form-actions input[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  background-color: #00539f;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin: 10px 0;
+}
+
+.form-actions input[type="submit"]:hover {
+  background-color: #2383e9;
+}
+
+/* Authentication links container */
+.authentication-links-container {
+  // min-width: 300px;
+  margin: 0 auto;
+  // border-radius: 5px;
+  // box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+}
+
+/* Authentication links */
+.auth-link {
+  // display: block;
+  // margin-bottom: 10px;
+  // margin: 10px;
+  float: right;
+  text-align: center;
+  text-decoration: none;
+  color: #00539f;
+  font-weight: bold;
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+}
+
+/* Signup container */
+.signup-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 3%;
+}
+
+/* Signup form */
+.signup-form .input-label {
+  margin-bottom: 5px;
+}
+
+.signup-form .checkbox-label {
+  margin-bottom: 10px;
+}
+
+.signup-form .submit-button {
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* Signup links */
+.signup-links {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.signup-links a {
+  display: block;
+  margin-bottom: 10px;
+  text-decoration: none;
+  color: #00539f;
+}
+
+.signup-links a:hover {
+  text-decoration: underline;
+}
+
+/* Login container */
+.login-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 3%;
+}
+
+/* Login form */
+.login-form .input-label {
+  margin-bottom: 5px;
+}
+
+.login-form .checkbox-label {
+  margin-bottom: 10px;
+}
+
+.login-form .submit-button {
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* Login links */
+.login-links {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.login-links a {
+  display: block;
+  margin-bottom: 10px;
+  text-decoration: none;
+  color: #00539f;
+}
+
+.login-links a:hover {
+  text-decoration: underline;
+}
+
+.form_containers {
+  // display: flex;
+  justify-content: center;
+  padding: 20px;
+  flex-direction: column ;
+  // align-items: center;
+  // margin-left: 30px;
+}
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-self: center;
+  justify-content: center;
+  margin-right: 40px; /* Adjust the spacing between the image and the form */
+}
+
+.logo-container p {
+  margin-left: 20px;
+}
+
+.login-container {
+  flex: 1; /* Allow the login container to expand to fill the available space */
+}
+
+@media screen and (max-width: 768px) {
+  .form_containers {
+    flex-direction: column;
+    margin-left: 0;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .logo-container {
+    margin-right: 0;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .login-container {
+    margin-top: 20px;
+  }
+
+  .signup-container {
+    margin-top: 20px;
+  }
+
+  .forgot-password-form-container {
+    margin-top: 20px;
+  }
+
+}
