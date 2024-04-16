@@ -40,12 +40,12 @@ class PostsController < ApplicationController
       case @visibility
       when 'upcoming'
         if current_user.user_role == "0" || current_user.user_role == "2"
-          @posts = Post.where('end_date >= ?', Date.today).where(published: true).order(end_date: :asc)
+          @posts = Post.where('end_date >= ?', Date.today).where(published: true).order(start_date: :asc)
         else
           redirect_to root_path
         end
       when 'recent'
-        @posts = Post.where('end_date < ?', Date.today).where(published: true).order(end_date: :asc)
+        @posts = Post.where('end_date < ?', Date.today).where(published: true).order(end_date: :desc)
       when 'archives'
         if current_user.user_role == "0" || current_user.user_role == "2"
           @posts = Post.where('end_date < ?', Date.today - 1.year).where(published: true).order(end_date: :asc)
@@ -54,13 +54,13 @@ class PostsController < ApplicationController
         end
       when 'history'
         if current_user.user_role == "1" || current_user.user_role == "2"
-          @posts = Post.where(email: current_user.email).order(end_date: :asc)
+          @posts = Post.where(email: current_user.email).order(end_date: :desc)
         else
           redirect_to root_path
         end
       when 'admin'
         if current_user.user_role == "2"
-          @posts = Post.where(published: false).order(end_date: :asc)
+          @posts = Post.where(published: false).order(created_at: :asc)
         else
           redirect_to root_path
         end
@@ -78,7 +78,7 @@ class PostsController < ApplicationController
         end
       when 'email'
         if current_user.user_role == "2"
-          @posts = Post.where(emailed: false || nil).where(published: true).where('end_date >= ?', Date.today).order(end_date: :asc)
+          @posts = Post.where(emailed: false || nil).where(published: true).where('end_date >= ?', Date.today).order(created_at: :asc)
           @selected_post_ids = params[:selected_post_ids] || []
         else
           redirect_to root_path
@@ -95,12 +95,19 @@ class PostsController < ApplicationController
           end
           @posts = @posts.uniq
           @posts = @posts.sort_by { |post| post.created_at }.reverse
+        else
+          redirect_to root_path
+        end
           
+      when 'search'
+        if current_user.user_role == "0" || current_user.user_role == "2" || current_user.user_role == "1"
+          @posts = Post.where("title LIKE ?","%#{params[:search]}%").where(published: true).order(end_date: :desc)
         else
           redirect_to root_path
         end
       else
-        redirect_to root_path
+        @posts = Post.all
+        # redirect_to root_path
       end
     end
 

@@ -44,7 +44,7 @@
         <% if current_user.user_role == '2' || current_user.user_role == '1' %>
           <%= link_to 'New Post', new_post_path, class: 'btn btn-outline-secondary', style: 'width: 100px; margin: 3px; float: inline-end;' %>
         <% end %>
-        <% if params[:visibility] == 'email' %>
+        <% if params[:visibility] == 'email' && @posts.size > 0 %>
           <% @selected_post_ids ||= [] %>
           <%= link_to 'Email', new_email_draft_path(selected_post_ids: @selected_post_ids), class: 'btn btn-primary', disabled: @selected_post_ids.empty? || @selected_post_ids.size > 10 || @selected_post_ids.nil?, style: 'width: 100px; margin: 3px; float: inline-end;' %>
           <%= link_to 'Clear Selections', posts_path(visibility: params[:visibility]), class: 'btn btn-outline-secondary', style: 'width: 138px; margin: 3px; float: inline-end;' %>
@@ -58,8 +58,9 @@
           <% @posts.each do |post| %>
             <tr>
               <td>
-                <div class="post-item">
-                  <h4><%= post.title %>, <%= post.start_date %> <%= post.start_time.to_s(:time) if post.start_time.present? %></h4>
+                <div class="post-item", style="margin: 0px;">
+                  <h4 style='color: #00539f;'>
+                  <%= post.title %>, <%= post.start_date %> <%= post.start_time.to_s(:time) if post.start_time.present? %></h4>
                   <div class="details">
                     <p><strong>Location:</strong> <%= post.location %></p>
                     <p><strong>Description:</strong> <%= post.description %></p>
@@ -71,7 +72,7 @@
                       <p>Custom Recurring Info: <%= post.custom_recurring_info.present? ? post.custom_recurring_info : 'None' %></p>
                       <p>Note: Dates may be inaccurate due to recurring nature. Verify details through URL.</p>
                     <% end %>
-                    <% if params[:visibility] == 'notifications' || params[:visibility] == 'saved' %>
+                    <% if params[:visibility] == 'notifications' || params[:visibility] == 'saved' || params[:visibility] == 'search' %>
                       <p class="<%= post.end_date.present? && post.end_date >= Date.today ? 'available' : 'not-available' %>"><%= post.end_date.present? && post.end_date >= Date.today ? 'Available' : 'Not Available' %></p>
                     <% end %>
                     <% if params[:visibility] == 'history' || (params[:visibility] == 'admin' && current_user.user_role == '2') %>

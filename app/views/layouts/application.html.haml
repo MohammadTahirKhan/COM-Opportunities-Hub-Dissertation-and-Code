@@ -22,11 +22,12 @@
     %header.navbar.navbar-expand-lg.bg-light.mb-3
       .container-fluid
         = link_to '#', class: 'navbar-brand' do
-          = image_pack_tag 'images/logo.png', height: 40, alt: 'Com Opportunities', class: 'd-inline-block align-top'
+          = image_pack_tag 'images/logo.png', height: 45, alt: 'Com Opportunities', class: 'd-inline-block align-top'
         %button.navbar-toggler{ type: :button, data: { bs_toggle: :collapse, bs_target: '#navbar-content' }, aria: { controls: 'navbar-content', expanded: 'true', label: 'Toggle navigation' } }
           %span.navbar-toggler-icon
         #navbar-content.navbar-collapse.collapse
           %nav.navbar-nav
+
             = link_to '/', class: 'nav-link' do
               %i.bi-house-fill
               Home
@@ -78,10 +79,19 @@
                 %i.bi-person-fill
                 Profile
               
+
+              
+              
             - if user_signed_in?
               = link_to 'Sign out', destroy_user_session_path, method: :delete, class: 'nav-link'
             - else
               = link_to 'Sign in', new_user_session_path, class: 'nav-link'
+
+            - if user_signed_in?
+              = form_tag(posts_path, method: :get, class: 'd-flex', id: 'search-form') do
+                = hidden_field_tag :visibility, 'search'
+                = text_field_tag :search, params[:search], class: 'form-control', placeholder: 'Search Opportunities'
+                = submit_tag 'Search', class: 'btn btn-outline-success', style: 'margin-left: 5px;'
 
     - if flash.present?
       .container-fluid.flash-messages
@@ -96,4 +106,13 @@
     %footer
       .container-fluid
         .d-flex.p-3
-          Footer text
+          %span.text-muted
+            = "Com Opportunities Hub © #{Time.now.year} | "
+            = link_to 'University of Sheffield', 'https://www.sheffield.ac.uk/', target: '_blank'
+            = " | "
+            = link_to 'COM Founders Club', 'https://sites.google.com/sheffield.ac.uk/comfoundersclub/home', target: '_blank'
+            = " | "
+            = link_to 'Slack Community', 'https://uoscomopps.slack.com/join/shared_invite/zt-vw3jqiuq-LX2SOfVrf9TwHUqMJHDsCA#/shared-invite/email', target: '_blank'
+            = " | "
+            = link_to 'Help', 'mailto: A.stratton@sheffield.ac.uk', target: '_blank'
+            

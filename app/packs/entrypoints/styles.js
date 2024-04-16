@@ -5,3 +5,4 @@ import '../styles/twitter_bootstrap';
 import '../styles/layout';
 import '../styles/posts';
 import '../styles/devise';
+import '../styles/home';
