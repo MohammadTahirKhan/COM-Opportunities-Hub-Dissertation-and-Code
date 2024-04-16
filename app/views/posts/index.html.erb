@@ -9,7 +9,9 @@
           <div class="notification-content flex-grow-1">
             <h2 class="notification-title"><%= post.title %></h2>
             <div class="details">
-              <p>There is a new post available for you that you may be interested in. Please click Show to view the details.</p>
+              <p class="<%= post.end_date.present? && post.end_date >= Date.today ? 'available' : 'not-available' %>"><%= post.end_date.present? && post.end_date >= Date.today ? 'Available' : 'Not Available' %></p>
+              <p>(<%= post.created_at.strftime('%d %b %Y') %>) :There is a new post available for you that you may be interested in. Please click Show to view the details.</p>
+              
             </div>
           </div>
           <div class="button-actions">
@@ -47,7 +49,7 @@
         <% if params[:visibility] == 'email' && @posts.size > 0 %>
           <% @selected_post_ids ||= [] %>
           <%= link_to 'Email', new_email_draft_path(selected_post_ids: @selected_post_ids), class: 'btn btn-primary', disabled: @selected_post_ids.empty? || @selected_post_ids.size > 10 || @selected_post_ids.nil?, style: 'width: 100px; margin: 3px; float: inline-end;' %>
-          <%= link_to 'Clear Selections', posts_path(visibility: params[:visibility]), class: 'btn btn-outline-secondary', style: 'width: 138px; margin: 3px; float: inline-end;' %>
+          <%= link_to 'Clear Selections', posts_path(visibility: params[:visibility]), class: 'btn btn-outline-secondary', style: 'width: 145px; margin: 3px; float: inline-end;' %>
         <% end %>
       </div>
     </div>
@@ -65,7 +67,7 @@
                     <p><strong>Location:</strong> <%= post.location %></p>
                     <p><strong>Description:</strong> <%= post.description %></p>
                     <p class="tags"><strong>Tags:</strong> <%= post.tags.join(' -') %></p>
-                    <p><strong>URL:</strong> <%= link_to post.url, post.url %></p>
+                    <p><strong>URL:</strong> <a href="http://<%= post.url %>" target="_blank">Click here</a></p>
                     <% if post.recurring %>
                       <p class="recurring">Recurring</p>
                       <p>Recurring Interval: <%= post.recurring_interval_num %> <%= post.recurring_interval_unit %></p>

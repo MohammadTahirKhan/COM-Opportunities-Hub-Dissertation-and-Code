@@ -14,7 +14,7 @@ class PostsController < ApplicationController
     def index
       Post.all.each do |post|
         if post.recurring == true
-          if post.end_date < Date.today
+          if post.end_date <= Date.today
             if post.recurring_interval_num.present? && post.recurring_interval_unit.present?
               post.update(start_date: post.start_date + post.recurring_interval_num.send(post.recurring_interval_unit))
               post.update(end_date: post.end_date + post.recurring_interval_num.send(post.recurring_interval_unit))
@@ -47,7 +47,7 @@ class PostsController < ApplicationController
       when 'recent'
         @posts = Post.where('end_date < ?', Date.today).where(published: true).order(end_date: :desc)
       when 'archives'
-        if current_user.user_role == "0" || current_user.user_role == "2"
+        if current_user.user_role == "0" || current_user.user_role == "2" || current_user.user_role == "1"
           @posts = Post.where('end_date < ?', Date.today - 1.year).where(published: true).order(end_date: :asc)
         else
           redirect_to root_path
@@ -100,7 +100,7 @@ class PostsController < ApplicationController
         end
           
       when 'search'
-        if current_user.user_role == "0" || current_user.user_role == "2" || current_user.user_role == "1"
+        if current_user.user_role == "0" || current_user.user_role == "2" 
           @posts = Post.where("title LIKE ?","%#{params[:search]}%").where(published: true).order(end_date: :desc)
         else
           redirect_to root_path

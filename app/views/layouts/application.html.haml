@@ -44,7 +44,7 @@
                 = link_to posts_path(visibility:'recent'), class: 'nav-link' do
                   %i.bi-search
                   Recent
-              - if current_user.user_role == "0" || current_user.user_role == "2"
+              - if current_user.user_role == "0" || current_user.user_role == "2" || current_user.user_role == "1"
                 = link_to posts_path(visibility:'archives'), class: 'nav-link' do
                   %i.bi-search
                   Archives
@@ -87,7 +87,7 @@
             - else
               = link_to 'Sign in', new_user_session_path, class: 'nav-link'
 
-            - if user_signed_in?
+            - if user_signed_in? && (current_user.user_role == "0" || current_user.user_role == "2")
               = form_tag(posts_path, method: :get, class: 'd-flex', id: 'search-form') do
                 = hidden_field_tag :visibility, 'search'
                 = text_field_tag :search, params[:search], class: 'form-control', placeholder: 'Search Opportunities'

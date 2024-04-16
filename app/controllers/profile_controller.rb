@@ -18,6 +18,9 @@ class ProfileController < ApplicationController
         if @user.update(full_name: params[:user][:full_name], email: params[:user][:email], password: params[:user][:password], password_confirmation: params[:user][:password_confirmation], tags: params[:user][:tags])
             redirect_to profile_path, notice: "Profile was successfully updated."
         else
+            if User.find_by(email: params[:user][:email]).present? && User.find_by(email: params[:user][:email]).id != @user.id 
+                flash[:alert] = "Email has already been taken"
+            end
             render :edit, status: :unprocessable_entity
         end
     end
