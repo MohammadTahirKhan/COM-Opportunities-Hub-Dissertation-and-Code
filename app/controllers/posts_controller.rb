@@ -58,7 +58,7 @@ class PostsController < ApplicationController
         else
           redirect_to root_path
         end
-      when 'admin'
+      when 'pending'
         if current_user.user_role == "2"
           @posts = Post.where(published: false).order(created_at: :asc)
         else

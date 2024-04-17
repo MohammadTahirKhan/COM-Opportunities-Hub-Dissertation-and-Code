@@ -57,17 +57,23 @@
                   %i.bi-bookmark
                   Saved
               - if current_user.user_role == "2"
-                = link_to posts_path(visibility:'admin'), class: 'nav-link' do
-                  %i.bi-hourglass-split
-                  Pending
-              - if current_user.user_role == "2"
-                = link_to posts_path(visibility:'email'), class: 'nav-link' do
-                  %i.bi-file-earmark-text
-                  Email
-              - if current_user.user_role == "2"
-                = link_to admin_index_path, class: 'nav-link' do
-                  %i.bi-nut
-                  Admin
+                .dropdown
+                  %a.nav-link.dropdown-toggle{ href: "#", id: "adminDropdown", role: "button", "data-bs-toggle": "dropdown", "aria-expanded": "false" }
+                    %i.bi.bi-nut
+                    Admin
+                  %ul.dropdown-menu{ "aria-labelledby": "adminDropdown" }
+                    - if current_user.user_role == "2"
+                      = link_to posts_path(visibility: 'pending'), class: 'dropdown-item' do
+                        %i.bi.bi-hourglass-split
+                        Pending
+                    - if current_user.user_role == "2"
+                      = link_to posts_path(visibility: 'email'), class: 'dropdown-item' do
+                        %i.bi.bi-file-earmark-text
+                        Email
+                    - if current_user.user_role == "2"
+                      = link_to admin_index_path(view: 'users'), class: 'dropdown-item' do
+                        %i.bi.bi-people
+                        Users
               - if current_user.user_role == "0" 
                 = link_to posts_path(visibility:'notifications'), class: 'nav-link' do
                   %i.bi-bell-fill
@@ -78,10 +84,7 @@
               = link_to profile_index_path, class: 'nav-link' do
                 %i.bi-person-fill
                 Profile
-              
 
-              
-              
             - if user_signed_in?
               = link_to 'Sign out', destroy_user_session_path, method: :delete, class: 'nav-link'
             - else

@@ -9,7 +9,11 @@ class AdminController < ApplicationController
   end
 
   def index
-    @users = User.all
+    if params[:view] == "users"
+      @users = User.all
+    else
+      redirect_to root_path
+    end
   end
 
   def edit

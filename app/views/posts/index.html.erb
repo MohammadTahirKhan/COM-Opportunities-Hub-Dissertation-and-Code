@@ -31,7 +31,7 @@
         <span>Listing Posts You've Posted (There are <%= @posts.size %> posts available.)</span>
       <% elsif params[:visibility] == 'saved' %>
         <span>Listing Posts You've Saved (There are <%= @posts.size %> posts available.)</span>
-      <% elsif params[:visibility] == 'admin' %>
+      <% elsif params[:visibility] == 'pending' %>
         <span>Listing Posts Awaiting Approval (There are <%= @posts.size %> posts available.)</span>
       <% elsif params[:visibility] == 'upcoming' %>
         <span>Listing Upcoming Posts (There are <%= @posts.size %> posts available.)</span>
@@ -77,7 +77,7 @@
                     <% if params[:visibility] == 'notifications' || params[:visibility] == 'saved' || params[:visibility] == 'search' %>
                       <p class="<%= post.end_date.present? && post.end_date >= Date.today ? 'available' : 'not-available' %>"><%= post.end_date.present? && post.end_date >= Date.today ? 'Available' : 'Not Available' %></p>
                     <% end %>
-                    <% if params[:visibility] == 'history' || (params[:visibility] == 'admin' && current_user.user_role == '2') %>
+                    <% if params[:visibility] == 'history' || (params[:visibility] == 'pending' && current_user.user_role == '2') %>
                       <p class="<%= post.published? ? 'published' : 'awaiting-approval' %>"><%= post.published? ? 'Published' : 'Awaiting Approval' %></p>
                     <% end %>
                   </div>
@@ -94,7 +94,7 @@
                   <% if current_user.user_role == '0' && !current_user.saved_post_ids.include?(post.id) %>
                     <%= link_to 'Save', save_post_ids_post_path(post), method: :patch, class: 'btn btn-outline-secondary' %>
                   <% end %>
-                  <% if !post.published? && current_user.user_role == '2' && params[:visibility] == 'admin' %>
+                  <% if !post.published? && current_user.user_role == '2' && params[:visibility] == 'pending' %>
                     <%= link_to 'Approve', approve_post_path(post), method: :patch, class: 'btn btn-outline-secondary' %>
                   <% end %>
                   <%= link_to 'Show', post, class: 'btn btn-outline-secondary' %>
