@@ -26,22 +26,14 @@
 #  updated_at              :datetime         not null
 #
 class Post < ApplicationRecord
-    # POST_ATTRIBUTES_PARAMS = %i[title location date organiser deadline description url post_type emailed tags:[] recurring].freeze
-    # enum post_type: { job: 0, event: 1, news: 2 }
-    # TAGS = ['job', 'event', 'news', 'AI', 'students']
     validates :email, presence: true
     validates :title, presence: true
     validates :location, presence: true
     validates :start_date, presence: true
-    # validates :start_time, presence: true
     validates :end_date, presence: true
-    # validates :end_time, presence: true
     validates :organiser, presence: true
-    # validates :deadline, presence: true
     validates :description, presence: true
     validates :url, presence: true
-    # validates :post_type, presence: true
-    # validates :emailed, presence: true
     validates :tags, presence: true
     validate :at_least_one_tag
 
@@ -51,7 +43,6 @@ class Post < ApplicationRecord
     
     validate :recurring_interval_num_cannot_be_negative
     validate :recurring_interval_unit_cannot_be_blank_if_recurring_num_present
-    # validate :custom_recurring_info_cannot_be_blank_if_recurring
     validate :recurring_interval_num_and_recurring_interval_unit_cannot_be_blank_if_recurring
     validates :recurring, inclusion: { in: [true, false] }
 

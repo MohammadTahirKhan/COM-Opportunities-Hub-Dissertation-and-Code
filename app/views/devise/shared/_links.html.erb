@@ -21,7 +21,7 @@
 
   <% if devise_mapping.omniauthable? %>
     <% resource_class.omniauth_providers.each do |provider| %>
-      <%= button_to "Sign in with Google", omniauth_authorize_path(resource_name, provider), class: "auth-link", data: { turbo: false } %><br />
+      <%= button_to "Sign in with Google", omniauth_authorize_path(resource_name, provider), class: "auth-link", data: { turbo: false }, disabled: true, style: "background-color: #4285F4; color: white; border: none; padding: 5px 8px; text-align: center; text-decoration: none; display: inline-block; font-size: 14px; margin: 4px 2px; border-radius: 4px;" %> <br />
     <% end %>
   <% end %>
 </div>

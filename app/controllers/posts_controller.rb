@@ -1,7 +1,6 @@
 class PostsController < ApplicationController
     before_action :set_posts, only: %i[ show edit update destroy publish]
     before_action :authenticate_user!
-    # before_action :set_posts2, only: %i[ 
     before_action :require_user
 
   def require_user
@@ -107,7 +106,6 @@ class PostsController < ApplicationController
         end
       else
         @posts = Post.all
-        # redirect_to root_path
       end
     end
 
@@ -158,17 +156,6 @@ class PostsController < ApplicationController
       end
     end
 
-    # def email
-    #   if current_user.user_role == "2"
-    #     params[:post_ids].each do |post_id|
-    #       post = Post.find(post_id)
-    #       post.update(emailed: true)
-    #     end
-    #     redirect_to posts_path, notice: "Posts were successfully emailed."
-    #   else
-    #     redirect_to root_path
-    #   end
-    # end
     
 
 

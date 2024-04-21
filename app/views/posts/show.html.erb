@@ -10,14 +10,14 @@
           <dd class="col-sm-9"><%= @post.title %></dd>
           <dt class="col-sm-3">Location</dt>
           <dd class="col-sm-9"><%= @post.location %></dd>
-          <dt class="col-sm-3">Start Date</dt>
+          <dt class="col-sm-3">Expected Start Date</dt>
           <dd class="col-sm-9"><%= @post.start_date if @post.start_date.present? %></dd>
           <% if @post.start_time.present? %>
             <dt class="col-sm-3">Start Time</dt>
             <dd class="col-sm-9"><%= @post.start_time.to_s(:time) %></dd>
           <% end %>
           <% if @post.end_date.present? %>
-            <dt class="col-sm-3">End Date</dt>
+            <dt class="col-sm-3">Expected End Date</dt>
             <dd class="col-sm-9"><%= @post.end_date %></dd>
           <% end %>
           <% if @post.end_time.present? %>

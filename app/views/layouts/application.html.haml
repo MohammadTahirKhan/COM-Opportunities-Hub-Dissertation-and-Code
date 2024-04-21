@@ -93,7 +93,7 @@
             - if user_signed_in? && (current_user.user_role == "0" || current_user.user_role == "2")
               = form_tag(posts_path, method: :get, class: 'd-flex', id: 'search-form') do
                 = hidden_field_tag :visibility, 'search'
-                = text_field_tag :search, params[:search], class: 'form-control', placeholder: 'Search Opportunities'
+                = text_field_tag :search, params[:search], class: 'form-control', placeholder: 'Search Opportunities', id: 'search-field'
                 = submit_tag 'Search', class: 'btn btn-outline-success', style: 'margin-left: 5px;'
 
     - if flash.present?

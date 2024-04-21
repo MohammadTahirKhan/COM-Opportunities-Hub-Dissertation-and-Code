@@ -27,8 +27,21 @@
 #
 FactoryBot.define do
   factory :user do
-    email { "MyString" }
-    password_digest { "MyString" }
-    user_role { "MyString" }
+    email { "email1@gmail.com" }
+    password { "123456" }
+    user_role { "0" }
   end
+
+  factory :poster, class: User do
+    email { "email2@gmail.com" }
+    password { "123456" }
+    user_role { "1" }
+  end
+
+  factory :admin, class: User do
+    email { "email3@gmail.com" }
+    password { "123456" }
+    user_role { "2" }
+  end
+  
 end

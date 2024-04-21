@@ -48,7 +48,7 @@
         <% end %>
         <% if params[:visibility] == 'email' && @posts.size > 0 %>
           <% @selected_post_ids ||= [] %>
-          <%= link_to 'Email', new_email_draft_path(selected_post_ids: @selected_post_ids), class: 'btn btn-primary', disabled: @selected_post_ids.empty? || @selected_post_ids.size > 10 || @selected_post_ids.nil?, style: 'width: 100px; margin: 3px; float: inline-end;' %>
+          <%= link_to 'Email Now', new_email_draft_path(selected_post_ids: @selected_post_ids), class: 'btn btn-primary', disabled: @selected_post_ids.empty? || @selected_post_ids.size > 10 || @selected_post_ids.nil?, style: 'width: 130px; margin: 3px; float: inline-end;' %>
           <%= link_to 'Clear Selections', posts_path(visibility: params[:visibility]), class: 'btn btn-outline-secondary', style: 'width: 145px; margin: 3px; float: inline-end;' %>
         <% end %>
       </div>
@@ -62,7 +62,7 @@
               <td>
                 <div class="post-item", style="margin: 0px;">
                   <h4 style='color: #00539f;'>
-                  <%= post.title %>, <%= post.start_date %> <%= post.start_time.to_s(:time) if post.start_time.present? %></h4>
+                  <%= post.title %>, Expected Start Date: <%= post.start_date %> <%= post.start_time.to_s(:time) if post.start_time.present? %></h4>
                   <div class="details">
                     <p><strong>Location:</strong> <%= post.location %></p>
                     <p><strong>Description:</strong> <%= post.description %></p>
