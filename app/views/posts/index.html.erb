@@ -64,6 +64,9 @@
                   <h4 style='color: #00539f;'>
                   <%= post.title %>, Expected Start Date: <%= post.start_date %> <%= post.start_time.to_s(:time) if post.start_time.present? %></h4>
                   <div class="details">
+                    <% if params[:visibility] == 'upcoming' %>
+                      <p class="<%= post.end_date.present? && post.end_date >= Date.today && post.start_date.present? && post.start_date <= Date.today ? 'On-Going' : 'Not-Started' %>"><%= post.end_date.present? && post.end_date >= Date.today && post.start_date.present? && post.start_date <= Date.today ? 'On-Going' : 'Not-Started' %></p>
+                    <% end %>
                     <p><strong>Location:</strong> <%= post.location %></p>
                     <p><strong>Description:</strong> <%= post.description %></p>
                     <p class="tags"><strong>Tags:</strong> <%= post.tags.join(' -') %></p>

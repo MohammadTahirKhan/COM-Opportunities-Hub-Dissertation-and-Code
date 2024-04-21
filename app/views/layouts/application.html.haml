@@ -77,6 +77,7 @@
               - if current_user.user_role == "0" 
                 = link_to posts_path(visibility:'notifications'), class: 'nav-link' do
                   %i.bi-bell-fill
+                  Notifications
                   -if current_user.unread_notification_ids.count > 0
                     %span.badge.bg-danger
                       = current_user.unread_notification_ids.count

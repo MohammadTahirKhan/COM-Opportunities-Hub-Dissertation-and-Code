@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Post, type: :model do
 
-    describe 'validations' do
+    describe 'validations:' do
         it "is valid with valid attributes" do
             user = User.create(email: "abc@gmail.com", password: "123456", full_name: "abc", user_role: "1")
             post = Post.new(email: "abc@gmail.com", title: "title", location: "location", start_date: Date.today, end_date: Date.today, deadline: Date.today, start_time: "10:00", end_time: "11:00", organiser: "organiser", description: "description", url: "url", tags: ["tag1", "tag2"], recurring: true, recurring_interval_num: 1, recurring_interval_unit: "week", custom_recurring_info: "custom_recurring_info")

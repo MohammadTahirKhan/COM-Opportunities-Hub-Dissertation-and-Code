@@ -70,12 +70,6 @@ class Post < ApplicationRecord
     end
 
 
-    def custom_recurring_info_cannot_be_blank_if_recurring
-        if recurring && custom_recurring_info.blank?
-            errors.add(:custom_recurring_info, "can't be blank if recurring")
-        end
-    end
-
     def start_date_and_end_date_cannot_be_in_the_past
         if start_date.present? && start_date < Date.today
             errors.add(:start_date, "can't be in the past")

@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     collection do
       get :new
       patch :add_selected_post_ids
-      patch :remove_selected_post_ids
+      # patch :remove_selected_post_ids
     end
   end
 
@@ -47,7 +47,7 @@ Rails.application.routes.draw do
   # post "sign_up", to: 'sessions#create_registration'
 
   
-  devise_for :users, components: {registrations: 'registrations', sessions: 'sessions', omniauth_callbacks: 'omniauth_callbacks'}
+  devise_for :users, components: {sessions: 'sessions', omniauth_callbacks: 'omniauth_callbacks'}
   devise_scope :user do
     get 'users/sign_out' => "devise/sessions#destroy"
     patch 'users/edit' => "devise/registrations#edit"

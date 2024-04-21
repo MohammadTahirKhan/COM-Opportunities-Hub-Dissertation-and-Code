@@ -26,12 +26,5 @@ class AdminController < ApplicationController
     user.update(user_params)
     redirect_to admin_index_path
   end
-
-  def destroy
-    user = User.find(params[:id])
-    user.destroy
-
-    redirect_to admin_index_path
-  end
     
 end

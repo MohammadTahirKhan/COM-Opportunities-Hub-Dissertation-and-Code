@@ -29,7 +29,7 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   
-  describe 'validations' do
+  describe 'validations:' do
     it 'should validate presence of email' do
       visit "/users/sign_up"
       fill_in 'Password', with: '123456'
@@ -87,7 +87,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe 'authenticate' do
+  describe 'authenticate:' do
     it 'should return the user when email and password are correct' do
       user = User.create(email: 'abc@gmail.com', password: '123456', full_name: 'abc', user_role: '0')
       visit "/users/sign_in"
@@ -120,7 +120,7 @@ RSpec.describe User, type: :model do
 
   end
 
-  describe 'Database' do
+  describe 'Database:' do
     it 'should have a table' do
       expect(User.table_exists?).to be(true)
     end
@@ -174,7 +174,7 @@ RSpec.describe User, type: :model do
 
   end
 
-  describe 'Factory' do
+  describe 'Factory:' do
     it 'should create user' do
       user = create(:user)
       expect(user.id).to be_truthy
@@ -192,7 +192,7 @@ RSpec.describe User, type: :model do
 
   end
 
-  describe 'Insertion' do
+  describe 'Insertion:' do
     it 'should insert user' do
       user = User.create(email: 'abc@gmail.com', password: '123456', full_name: 'abc', user_role: '0')
       expect(user.id).to be_truthy
@@ -201,7 +201,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe 'Deletion' do
+  describe 'Deletion:' do
     it 'should delete user' do
       user = User.create(email: 'abc@gmail.com', password: '123456', full_name: 'abc', user_role: '0')
       User.destroy(user.id)
@@ -209,7 +209,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe 'Update' do
+  describe 'Update:' do
     it 'should update user' do
       user = User.create(email: 'abc@gmail.com', password: '123456', full_name: 'abc', user_role: '0') 
       user.update(email: 'abc@gmail.com', password: '123456', full_name: 'abcd', user_role: '1')
@@ -220,7 +220,7 @@ RSpec.describe User, type: :model do
 
   end
 
-  describe 'Registration' do
+  describe 'Registration:' do
     it 'should register user' do
       visit "/users/sign_up"
       fill_in 'Email', with: 'abc@gmail.com'
@@ -273,7 +273,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe 'Sign in' do
+  describe 'Sign in:' do
     it 'should sign in user' do
       user = User.create(email: 'abc@gmail.com', password: '123456', full_name: 'abc', user_role: '0') 
       visit "/users/sign_in"
@@ -322,7 +322,7 @@ RSpec.describe User, type: :model do
 
   end
 
-  describe 'Sign out' do
+  describe 'Sign out:' do
     it 'should sign out user' do
       user = User.create(email: 'abc@gmail.com', password: '123456', full_name: 'abc', user_role: '0') 
       visit "/users/sign_in"
@@ -335,7 +335,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe 'Forgot password' do
+  describe 'Forgot password:' do
     it 'should send reset password email' do
       user = User.create(email: 'abc@gmail.com', password: '123456', full_name: 'abc', user_role: '0') 
       visit "/users/sign_in"
@@ -381,7 +381,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe 'Devise Configuration' do
+  describe 'Devise Configuration:' do
     it 'uses database authenticatable' do
       expect(described_class.devise_modules).to include(:database_authenticatable)
     end
@@ -404,7 +404,7 @@ RSpec.describe User, type: :model do
   end
 
   
-  describe '.from_omniauth' do
+  describe '.from_omniauth:' do
     let(:auth) { double('auth', provider: 'provider', uid: 'uid', info: double('info', email: 'test@example.com', name: 'Test User')) }
     
     context 'when user does not exist' do

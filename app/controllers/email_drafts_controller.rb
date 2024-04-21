@@ -22,14 +22,14 @@ class EmailDraftsController < ApplicationController
       redirect_to posts_path(visibility: 'email', selected_post_ids: @selected_post_ids)
     end
 
-    def remove_selected_post_ids
-      @post = Post.find(params[:post_id])
-      @selected_post_ids = params[:selected_post_ids] || []
-      if @selected_post_ids.include?(@post.id)
-        @selected_post_ids.delete(@post.id)
-      end
-      redirect_to posts_path(visibility: 'email', selected_post_ids: @selected_post_ids)
-    end
+    # def remove_selected_post_ids
+    #   @post = Post.find(params[:post_id])
+    #   @selected_post_ids = params[:selected_post_ids] || []
+    #   if @selected_post_ids.include?(@post.id)
+    #     @selected_post_ids.delete(@post.id)
+    #   end
+    #   redirect_to posts_path(visibility: 'email', selected_post_ids: @selected_post_ids)
+    # end
   
     private
   

@@ -48,16 +48,16 @@
   width: fit-content;
 }
 
-.published {
-  background-color: #3eb83e;
+.published, .On-Going {
+  background-color: #4bd24b;
   padding: 5px;
   margin-bottom: 5px;
   border-radius: 3px;
   width: fit-content;
 }
 
-.awaiting-approval {
-  background-color: #d5cb3e;
+.awaiting-approval, .Not-Started {
+  background-color: #d2de2d;
   padding: 5px;
   margin-bottom: 5px;
   border-radius: 3px;

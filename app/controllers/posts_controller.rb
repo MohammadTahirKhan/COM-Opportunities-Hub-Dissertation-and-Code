@@ -1,13 +1,13 @@
 class PostsController < ApplicationController
     before_action :set_posts, only: %i[ show edit update destroy publish]
     before_action :authenticate_user!
-    before_action :require_user
+    # before_action :require_user
 
-  def require_user
-    unless current_user.user_role == "0" || current_user.user_role == "2" || current_user.user_role == "1"
-      redirect_to root_path
-    end
-  end
+  # def require_user
+  #   unless current_user.user_role == "0" || current_user.user_role == "2" || current_user.user_role == "1"
+  #     redirect_to root_path
+  #   end
+  # end
   
     # GET /posts
     def index
@@ -46,11 +46,7 @@ class PostsController < ApplicationController
       when 'recent'
         @posts = Post.where('end_date < ?', Date.today).where(published: true).order(end_date: :desc)
       when 'archives'
-        if current_user.user_role == "0" || current_user.user_role == "2" || current_user.user_role == "1"
-          @posts = Post.where('end_date < ?', Date.today - 1.year).where(published: true).order(end_date: :asc)
-        else
-          redirect_to root_path
-        end
+        @posts = Post.where('end_date < ?', Date.today - 1.year).where(published: true).order(end_date: :asc)
       when 'history'
         if current_user.user_role == "1" || current_user.user_role == "2"
           @posts = Post.where(email: current_user.email).order(end_date: :desc)
@@ -101,6 +97,7 @@ class PostsController < ApplicationController
       when 'search'
         if current_user.user_role == "0" || current_user.user_role == "2" 
           @posts = Post.where("title LIKE ?","%#{params[:search]}%").where(published: true).order(end_date: :desc)
+          # search
         else
           redirect_to root_path
         end
@@ -122,79 +119,71 @@ class PostsController < ApplicationController
     def show
     end
 
-    def search
-      if params[:visibility] == "upcoming"
-        @posts = Post.where("title LIKE ?","%#{params[:search]}%").where('end_date >= ?', Date.today).where(published: true).order(end_date: :asc)
-      elsif params[:visibility] == "recent"
-        @posts = Post.where("title LIKE ?","%#{params[:search]}%").where('end_date < ?', Date.today).where(published: true).order(end_date: :asc)
-      elsif params[:visibility] == "archives"
-        @posts = Post.where("title LIKE ?","%#{params[:search]}%").where('end_date < ?', Date.today - 1.year).where(published: true).order(end_date: :asc)
-      elsif params[:visibility] == "history"
-        @posts = Post.where("title LIKE ?","%#{params[:search]}%").where(email: current_user.email).order(end_date: :asc)
-      elsif params[:visibility] == "admin"
-        @posts = Post.where("title LIKE ?","%#{params[:search]}%").where(published: false).order(end_date: :asc)
-      elsif params[:visibility] == "saved"
-        @posts = []
-        for post in Post.all
-          if current_user.saved_post_ids.include?(post.id) && post.title.include?(params[:search])
-            @posts += [post]
-          end
-        end
-      elsif params[:visibility] == "email"
-        @posts = Post.where("title LIKE ?","%#{params[:search]}%").where(emailed: false || nil).where(published: true).where('end_date >= ?', Date.today).order(end_date: :asc)
-        @selected_post_ids = params[:selected_post_ids] || []
-      elsif params[:visibility] == "notifications"
-        mark_as_read
-        @posts = []
-        for post in Post.all
-          if current_user.unread_notification_ids.include?(post.id) || current_user.read_notification_ids.include?(post.id)
-            @posts += [post]
-          end
-        end
-        @posts = @posts.uniq
-        @posts = @posts.sort_by { |post| post.created_at }.reverse
-      end
-    end
+    # def search
+    #   @posts = []
+    #   if params[:visibility] == "upcoming"
+    #     @posts = Post.where("title LIKE ?","%#{params[:search]}%").where('end_date >= ?', Date.today).where(published: true).order(end_date: :asc)
+    #   elsif params[:visibility] == "recent"
+    #     @posts = Post.where("title LIKE ?","%#{params[:search]}%").where('end_date < ?', Date.today).where(published: true).order(end_date: :asc)
+    #   elsif params[:visibility] == "archives"
+    #     @posts = Post.where("title LIKE ?","%#{params[:search]}%").where('end_date < ?', Date.today - 1.year).where(published: true).order(end_date: :asc)
+    #   elsif params[:visibility] == "history"
+    #     @posts = Post.where("title LIKE ?","%#{params[:search]}%").where(email: current_user.email).order(end_date: :asc)
+    #   elsif params[:visibility] == "admin"
+    #     @posts = Post.where("title LIKE ?","%#{params[:search]}%").where(published: false).order(end_date: :asc)
+    #   elsif params[:visibility] == "saved"
+    #     for post in Post.all
+    #       if current_user.saved_post_ids.include?(post.id) && post.title.include?(params[:search])
+    #         @posts += [post]
+    #       end
+    #     end
+    #   elsif params[:visibility] == "email"
+    #     @posts = Post.where("title LIKE ?","%#{params[:search]}%").where(emailed: false || nil).where(published: true).where('end_date >= ?', Date.today).order(end_date: :asc)
+    #     @selected_post_ids = params[:selected_post_ids] || []
+    #   elsif params[:visibility] == "notifications"
+    #     mark_as_read
+    #     for post in Post.all
+    #       if current_user.unread_notification_ids.include?(post.id) || current_user.read_notification_ids.include?(post.id)
+    #         @posts += [post]
+    #       end
+    #     end
+    #     @posts = @posts.uniq
+    #     @posts = @posts.sort_by { |post| post.created_at }.reverse
+    #     @posts = @posts.select { |post| post.title.include?(params[:search]) }
+    #   else
+    #     @posts = Post.where("title LIKE ?","%#{params[:search]}%")
+    #   end
+
+    #   return @posts
+    # end
 
     
 
 
     def save_post_ids
-      if current_user.user_role == "0"
-        @user = User.find(current_user.id)
-        saved_ids = @user.saved_post_ids || []
-        post_id = params[:id].to_i
-        saved_ids << post_id unless saved_ids.include?(post_id)
-        @user.update(saved_post_ids: saved_ids)
-        redirect_to posts_path, notice: "Post was successfully saved."
-      else
-        redirect_to root_path
-      end
+      @user = User.find(current_user.id)
+      saved_ids = @user.saved_post_ids || []
+      post_id = params[:id].to_i
+      saved_ids << post_id unless saved_ids.include?(post_id)
+      @user.update(saved_post_ids: saved_ids)
+      redirect_to posts_path, notice: "Post was successfully saved."
     end
     
     def unsave_post_ids
-      if current_user.user_role == "0"
-        @user = User.find(current_user.id)
-        saved_ids = @user.saved_post_ids || []
-        post_id = params[:id].to_i
-        saved_ids.delete(post_id)
-        @user.update(saved_post_ids: saved_ids)
-        redirect_to posts_path, notice: "Post was successfully unsaved."
-      else
-        redirect_to root_path
-      end
+      @user = User.find(current_user.id)
+      saved_ids = @user.saved_post_ids || []
+      post_id = params[:id].to_i
+      saved_ids.delete(post_id)
+      @user.update(saved_post_ids: saved_ids)
+      redirect_to posts_path, notice: "Post was successfully unsaved."
     end
 
 
     def mark_as_read
-      if current_user.user_role == "0"
-        @user = User.find(current_user.id)
-        if @user.unread_notification_ids.present? && @user.read_notification_ids.size > 0
-          @user.update(unread_notification_ids: [])
-          flash[:notice] = "Notifications were successfully marked as read."
-        end
-      else
-        redirect_to root_path
+      @user = User.find(current_user.id)
+      if @user.unread_notification_ids.present? && @user.read_notification_ids.size > 0
+        @user.update(unread_notification_ids: [])
+        flash[:notice] = "Notifications were successfully marked as read."
       end
 
     end
@@ -202,13 +191,9 @@ class PostsController < ApplicationController
 
     # GET /posts/1/publish
     def approve
-      if current_user.user_role == "2"
         @post = Post.find(params[:id])
         @post.update(published: true)
         redirect_to posts_path, notice: "Post was successfully published."
-      else
-        redirect_to root_path
-      end
     end
     
   
@@ -242,36 +227,24 @@ class PostsController < ApplicationController
   
     # PATCH/PUT /posts/1
     def update
-      publish = params[:publish]
-      if publish == "true"
-        if current_user.user_role == "2"
-          @post.update(published: true)
-          redirect_to posts_path, notice: "Post was successfully published."
-        else
-          redirect_to root_path
-        end
-      end
-      if current_user.user_role == "2" || current_user.email == @post.email
+      # publish = params[:publish]
+      # if publish == "true"
+      #     @post.update(published: true)
+      #     redirect_to posts_path, notice: "Post was successfully published."
+      # end
       
-        if @post.update(post_params)
-          @post.update(published: false)
-          redirect_to post_path, notice: "post was successfully updated, an admin needs to publish it for it to be visible to others."
-        else
-          render :edit, status: :unprocessable_entity
-        end
+      if @post.update(post_params)
+        @post.update(published: false)
+        redirect_to post_path, notice: "post was successfully updated, an admin needs to publish it for it to be visible to others."
       else
-        redirect_to root_path
+        render :edit, status: :unprocessable_entity
       end
     end
   
     # DELETE /posts/1
     def destroy
-      if current_user.user_role == "2" || current_user.email == @post.email
-        @post.destroy
-        redirect_to post_url, notice: "post was successfully destroyed."
-      else
-        redirect_to root_path
-      end
+      @post.destroy
+      redirect_to post_url, notice: "post was successfully destroyed."
     end
   
     private

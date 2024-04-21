@@ -100,6 +100,7 @@ group :test do
   gem 'database_cleaner'
   gem 'launchy'
   gem 'simplecov'
+  gem 'rails-controller-testing'
 end
 
 gem 'omniauth'
