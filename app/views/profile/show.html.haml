@@ -12,10 +12,10 @@
           = @user.user_role == '0' ? 'User' : @user.user_role == '1' ? 'Poster' : 'Admin'
         %p
           %strong Created at:
-          = @user.created_at
+          = @user.created_at.strftime('%Y-%m-%d %H:%M:%S')
         %p
           %strong Updated at:
-          = @user.updated_at
+          = @user.updated_at.strftime('%Y-%m-%d %H:%M:%S')
         %p
           %strong password:
           = @user.password
@@ -24,5 +24,5 @@
             %strong tags:
             = @user.tags.join(' -')
       .card-footer.d-flex
-        = link_to 'Edit', edit_admin_path(@user), class: 'btn btn-outline-secondary'
-        = link_to 'Back', admin_index_path, class: 'btn btn-link ms-auto'
+        = link_to 'Edit', edit_profile_path(@user), class: 'btn btn-outline-secondary'
+        = link_to 'Back', root_path, class: 'btn btn-link ms-auto'

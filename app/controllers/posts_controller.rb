@@ -1,13 +1,6 @@
 class PostsController < ApplicationController
     before_action :set_posts, only: %i[ show edit update destroy publish]
     before_action :authenticate_user!
-    # before_action :require_user
-
-  # def require_user
-  #   unless current_user.user_role == "0" || current_user.user_role == "2" || current_user.user_role == "1"
-  #     redirect_to root_path
-  #   end
-  # end
   
     # GET /posts
     def index
@@ -39,17 +32,19 @@ class PostsController < ApplicationController
       case @visibility
       when 'upcoming'
         if current_user.user_role == "0" || current_user.user_role == "2"
-          @posts = Post.where('end_date >= ?', Date.today).where(published: true).order(start_date: :asc)
+          @posts = Post.where('end_date >= ?', Date.today).where('start_date <= ?', Date.today).where(published: true).order(start_date: :asc)
+          @posts += Post.where('end_date >= ?', Date.today).where('start_date > ?', Date.today).where(published: true).order(start_date: :asc)
+          @posts = @posts.uniq
         else
           redirect_to root_path
         end
       when 'recent'
         @posts = Post.where('end_date < ?', Date.today).where(published: true).order(end_date: :desc)
       when 'archives'
-        @posts = Post.where('end_date < ?', Date.today - 1.year).where(published: true).order(end_date: :asc)
+        @posts = Post.where('end_date < ?', Date.today - 1.year).where(published: true).order(end_date: :desc)
       when 'history'
         if current_user.user_role == "1" || current_user.user_role == "2"
-          @posts = Post.where(email: current_user.email).order(end_date: :desc)
+          @posts = Post.where(email: current_user.email).order(created_at: :desc)
         else
           redirect_to root_path
         end
@@ -102,7 +97,10 @@ class PostsController < ApplicationController
           redirect_to root_path
         end
       else
-        @posts = Post.all
+        @posts = Post.all.where(published: true).where('end_date >= ?', Date.today).where('start_date <= ?', Date.today).order(start_date: :asc)
+        @posts += Post.all.where(published: true).where('end_date >= ?', Date.today).where('start_date > ?', Date.today).order(start_date: :asc)
+        @posts += Post.all.where(published: true).where('end_date < ?', Date.today).order(end_date: :desc)
+        @posts = @posts.uniq
       end
     end
 
@@ -156,8 +154,6 @@ class PostsController < ApplicationController
 
     #   return @posts
     # end
-
-    
 
 
     def save_post_ids
@@ -227,12 +223,6 @@ class PostsController < ApplicationController
   
     # PATCH/PUT /posts/1
     def update
-      # publish = params[:publish]
-      # if publish == "true"
-      #     @post.update(published: true)
-      #     redirect_to posts_path, notice: "Post was successfully published."
-      # end
-      
       if @post.update(post_params)
         @post.update(published: false)
         redirect_to post_path, notice: "post was successfully updated, an admin needs to publish it for it to be visible to others."

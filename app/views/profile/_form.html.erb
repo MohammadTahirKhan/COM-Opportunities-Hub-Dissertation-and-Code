@@ -17,7 +17,7 @@
 
       <% if @user.user_role == '0' %>
         <%= f.label :tags %>
-        <% ['AI', 'ML', 'Data Science', 'Software', 'IOT', 'Industry event', 'Job opportunity'].each do |tag| %>
+        <% ['AI', 'ML', 'Data Science', 'Software', 'IOT', 'Industry event', 'Job opportunity', 'Other'].each do |tag| %>
           <div class="form-check">
             <%= check_box_tag 'user[tags][]', tag, @user.tags.include?(tag), class: 'form-check-input', id: "user_tags_#{tag}" %>
             <%= label_tag "user_tags_#{tag}", tag, class: 'form-check-label' %>

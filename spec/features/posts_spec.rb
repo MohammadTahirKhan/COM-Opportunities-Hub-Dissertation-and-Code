@@ -2,9 +2,9 @@ require "rails_helper"
 RSpec.describe "Posts features:", type: :feature do
 
     describe "creating a post-" do
-        scenario "Poster creates a post" do
+        scenario "Poster/admin creates a post" do
             # Sign in as a user
-            user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '1')
+            user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '2')
             visit new_user_session_path
             fill_in "Email", with: user.email
             fill_in "Password", with: 'password'
@@ -37,6 +37,9 @@ RSpec.describe "Posts features:", type: :feature do
 
             # Expectations
             expect(page).to have_content("post was successfully created.")
+            click_link "Pending"
+            click_link "Approve"
+            click_link "Upcoming"
             expect(page).to have_content("Test Post")
             expect(page).to have_content("Test Location")
 
@@ -1216,8 +1219,8 @@ RSpec.describe "Posts features:", type: :feature do
             visit new_post_path
             fill_in "Title", with: "Test Post"
             fill_in "Location", with: "Test Location"
-            fill_in "post_start_date", with: Date.today
-            fill_in "post_end_date", with: Date.today
+            fill_in "post_start_date", with: Date.tomorrow
+            fill_in "post_end_date", with: Date.tomorrow
             fill_in "Organiser", with: "Test Organiser"
             fill_in "Description", with: "Test Description"
             fill_in "post_deadline", with: Date.today
@@ -1242,7 +1245,7 @@ RSpec.describe "Posts features:", type: :feature do
             expect(page).to have_content("Listing notifications")
             expect(page).to have_content("Notifications were successfully marked as read.")
             expect(page).to have_content("Test Post")
-            expect(page).to have_content("There is a new post available for you that you may be interested in. Please click Show to view the details.")
+            expect(page).to have_content("There is a new opportunity that you may be interested in. Please click Show to view the details.")
             expect(page).to have_content("Available")
         end
 
@@ -1281,7 +1284,6 @@ RSpec.describe "Posts features:", type: :feature do
             expect(page).to have_content("Test Post")
             click_link "Show"
             expect(page).to have_content("Test Post")
-            click_link "Back"
             click_link "Notifications"
             click_link "Save"
             expect(page).to have_content("Post was successfully saved.")
