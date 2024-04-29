@@ -1,24 +1,25 @@
-# README
+# COM Opportunities Hub: An efficiency based approach for managing student/staff opportunities
+A Web Application to post, manage, browse and track opportunities for students and staff in the department of Computer Science at the University of Sheffield.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Getting Started
+### Dependencies
+* Ruby 3.1.2
+* Rails 7
+* PostgreSQL 14
 
-Things you may want to cover:
+### Installing
+* Clone the repository
+* Ensure the postgresql server is running with `sudo service postgresql start`
+* Run `bundle install` to install Ruby dependencies 
+* Run `rails db:setup` to create the database and seed it with default data
+* Run `bin/shakapacker -w` to start the shakapacker server
+* Run `bundle exec rails s` in another terminal to start the server
 
-* Ruby version
+### URLs
+* The server will be running on `https://localhost:3000`
 
-* System dependencies
+### Testing
+To run the automated tests, run
+`rspec`
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+** Please look at the `db/seeds.rb` file to see the default users that are added **
