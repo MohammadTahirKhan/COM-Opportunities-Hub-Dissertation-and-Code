@@ -11,6 +11,7 @@ A Web Application to post, manage, browse and track opportunities for students a
 * Clone the repository
 * Ensure the postgresql server is running with `sudo service postgresql start`
 * Run `bundle install` to install Ruby dependencies 
+* Run `yarn install` to install JavaScript dependencies
 * Run `rails db:setup` to create the database and seed it with default data
 * Run `bin/shakapacker -w` to start the shakapacker server
 * Run `bundle exec rails s` in another terminal to start the server
