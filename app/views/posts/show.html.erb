@@ -11,14 +11,14 @@
           <dt class="col-sm-3">Location</dt>
           <dd class="col-sm-9"><%= @post.location %></dd>
           <dt class="col-sm-3">Expected Start Date</dt>
-          <dd class="col-sm-9"><%= @post.start_date if @post.start_date.present? %></dd>
+          <dd class="col-sm-9"><%= @post.start_date.strftime("%e %B %Y") if @post.start_date.present? %></dd>
           <% if @post.start_time.present? %>
             <dt class="col-sm-3">Start Time</dt>
             <dd class="col-sm-9"><%= @post.start_time.to_s(:time) %></dd>
           <% end %>
           <% if @post.end_date.present? %>
             <dt class="col-sm-3">Expected End Date</dt>
-            <dd class="col-sm-9"><%= @post.end_date %></dd>
+            <dd class="col-sm-9"><%= @post.end_date.strftime("%e %B %Y") %></dd>
           <% end %>
           <% if @post.end_time.present? %>
             <dt class="col-sm-3">End Time</dt>
@@ -27,7 +27,7 @@
           <dt class="col-sm-3">Organiser</dt>
           <dd class="col-sm-9"><%= @post.organiser %></dd>
           <dt class="col-sm-3">Deadline</dt>
-          <dd class="col-sm-9"><%= @post.deadline %></dd>
+          <dd class="col-sm-9"><%= @post.deadline.strftime("%e %B %Y") %></dd>
           <dt class="col-sm-3">URL</dt>
           <dd class="col-sm-9"><a href="http://<%= @post.url %>" target="_blank">Click here</a></dd>
           <% if @post.tags.present? %>

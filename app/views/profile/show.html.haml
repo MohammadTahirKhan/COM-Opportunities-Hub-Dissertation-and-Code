@@ -12,10 +12,10 @@
           = @user.user_role == '0' ? 'User' : @user.user_role == '1' ? 'Poster' : 'Admin'
         %p
           %strong Created at:
-          = @user.created_at.strftime('%Y-%m-%d %H:%M:%S')
+          = @user.created_at.strftime('%e %B %Y %H:%M:%S')
         %p
           %strong Updated at:
-          = @user.updated_at.strftime('%Y-%m-%d %H:%M:%S')
+          = @user.updated_at.strftime('%e %B %Y %H:%M:%S')
         %p
           %strong password:
           = @user.password
