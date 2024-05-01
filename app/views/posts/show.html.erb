@@ -27,9 +27,9 @@
           <dt class="col-sm-3">Organiser</dt>
           <dd class="col-sm-9"><%= @post.organiser %></dd>
           <dt class="col-sm-3">Deadline</dt>
-          <dd class="col-sm-9"><%= @post.deadline.strftime("%e %B %Y") %></dd>
+          <dd class="col-sm-9"><%= @post.deadline.strftime("%e %B %Y") if @post.deadline.present? %></dd>
           <dt class="col-sm-3">URL</dt>
-          <dd class="col-sm-9"><a href="http://<%= @post.url %>" target="_blank">Click here</a></dd>
+          <dd class="col-sm-9"><a href="<%= @post.url %>" target="_blank">Click here</a></dd>
           <% if @post.tags.present? %>
             <dt class="col-sm-3">Tags</dt>
             <dd class="col-sm-9"><%= @post.tags.join(' -') %></dd>

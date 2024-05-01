@@ -83,7 +83,7 @@
                     <p><strong>Location:</strong> <%= post.location %></p>
                     <p><strong>Description:</strong> <%= post.description %></p>
                     <p class="tags"><strong>Tags:</strong> <%= post.tags.join(' -') %></p>
-                    <p><strong>URL:</strong> <a href="http://<%= post.url %>" target="_blank">Click here</a></p>
+                    <p><strong>URL:</strong> <a href="<%= post.url %>" target="_blank">Click here</a></p>
                     <% if post.recurring %>
                       <p class="recurring">Recurring</p>
                       <p>Recurring Interval: <%= post.recurring_interval_num %> <%= post.recurring_interval_unit %></p>
