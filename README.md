@@ -4,7 +4,7 @@ A Web Application to post, manage, browse and track opportunities for students a
 ## Getting Started
 ### Dependencies
 * Ruby 3.1.2
-* Rails 7
+* Rails 7.0.8
 * PostgreSQL 14
 
 ### Installing
