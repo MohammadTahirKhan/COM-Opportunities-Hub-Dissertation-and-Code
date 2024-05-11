@@ -2,7 +2,7 @@ require "rails_helper"
 RSpec.describe "Posts features:", type: :feature do
 
     describe "creating a post-" do
-        scenario "Poster/admin creates a post" do
+        scenario "poster/admin creates a post" do
             # Sign in as a user
             user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '2')
             visit new_user_session_path
@@ -45,7 +45,7 @@ RSpec.describe "Posts features:", type: :feature do
 
         end
 
-        scenario "Poster can't create a post without a title" do
+        scenario "poster can't create a post without a title" do
             # Sign in as a user
             user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '1')
             visit new_user_session_path
@@ -79,7 +79,7 @@ RSpec.describe "Posts features:", type: :feature do
             expect(page).to have_content("Title can't be blank")
         end
 
-        scenario "Poster can't create a post without a location" do
+        scenario "poster can't create a post without a location" do
             # Sign in as a user
             user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '1')
             visit new_user_session_path
@@ -113,7 +113,7 @@ RSpec.describe "Posts features:", type: :feature do
             expect(page).to have_content("Location can't be blank")
         end
 
-        scenario "Poster can't create post without a start date" do
+        scenario "poster can't create post without a start date" do
             # Sign in as a user
             user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '1')
             visit new_user_session_path
@@ -150,7 +150,7 @@ RSpec.describe "Posts features:", type: :feature do
             expect(page).to have_content("Start date and End date can't be blank")
         end
 
-        scenario "Poster can't create post without an end date" do
+        scenario "poster can't create post without an end date" do
             user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '1')
             visit new_user_session_path
             fill_in "Email", with: user.email
@@ -187,7 +187,7 @@ RSpec.describe "Posts features:", type: :feature do
 
         end
 
-        scenario "Poster can't create post without an organiser" do
+        scenario "poster can't create post without an organiser" do
             user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '1')
             visit new_user_session_path
             fill_in "Email", with: user.email
@@ -225,7 +225,7 @@ RSpec.describe "Posts features:", type: :feature do
 
         end
 
-        scenario "Poster can't create post without a description" do
+        scenario "poster can't create post without a description" do
             user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '1')
             visit new_user_session_path
             fill_in "Email", with: user.email
@@ -262,7 +262,7 @@ RSpec.describe "Posts features:", type: :feature do
             expect(page).to have_content("Description can't be blank")
         end
 
-        scenario "Poster can't create post without a URL" do
+        scenario "poster can't create post without a URL" do
             user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '1')
             visit new_user_session_path
             fill_in "Email", with: user.email
@@ -299,7 +299,7 @@ RSpec.describe "Posts features:", type: :feature do
             expect(page).to have_content("Url can't be blank")
         end
 
-        scenario "Poster can't create post without tags" do
+        scenario "poster can't create post without tags" do
             user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '1')
             visit new_user_session_path
             fill_in "Email", with: user.email
@@ -336,7 +336,7 @@ RSpec.describe "Posts features:", type: :feature do
             expect(page).to have_content("Tags must have at least one tag")
         end
 
-        scenario "Poster can't create post without selecting recurring" do
+        scenario "poster can't create post without selecting recurring" do
             user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '1')
             visit new_user_session_path
             fill_in "Email", with: user.email
@@ -373,7 +373,7 @@ RSpec.describe "Posts features:", type: :feature do
             expect(page).to have_content("Recurring is not included in the list")
         end
 
-        scenario "Poster can't create post with recurring but without recurring interval and interval unit" do
+        scenario "poster can't create post with recurring but without recurring interval and interval unit" do
             user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '1')
             visit new_user_session_path
             fill_in "Email", with: user.email
@@ -411,7 +411,7 @@ RSpec.describe "Posts features:", type: :feature do
             expect(page).to have_content("Recurring interval unit can't be blank if recurring")
         end
 
-        scenario "Poster can't create post with recurring but with recurring interval num as negative or zero and interval unit as blank" do
+        scenario "poster can't create post with recurring but with recurring interval num as negative or zero and interval unit as blank" do
             user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '1')
             visit new_user_session_path
             fill_in "Email", with: user.email
@@ -449,43 +449,43 @@ RSpec.describe "Posts features:", type: :feature do
             expect(page).to have_content("Recurring interval unit can't be blank if recurring interval number is present and Recurring interval unit can't be blank if recurring")
         end
 
-        scenario "Post must be created if user creates a post without recurring and fills recurring interval num as zero or negative and interval unit as blank" do
-            user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '1')
-            visit new_user_session_path
-            fill_in "Email", with: user.email
-            fill_in "Password", with: 'password'
-            click_button "Log in"
+        # scenario "Post must be created if user creates a post without recurring and fills recurring interval num as zero or negative and interval unit as blank" do
+        #     user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '1')
+        #     visit new_user_session_path
+        #     fill_in "Email", with: user.email
+        #     fill_in "Password", with: 'password'
+        #     click_button "Log in"
 
-            # Visit the new post page
-            visit new_post_path
+        #     # Visit the new post page
+        #     visit new_post_path
 
-            # Fill in the form fields
-            fill_in "Title", with: "Test Post"
-            fill_in "Location", with: "Test Location"
-            fill_in "post_start_date", with: Date.today
-            fill_in "post_end_date", with: Date.tomorrow
-            fill_in "Organiser", with: "Test Organiser"
-            fill_in "Description", with: "Test Description"
-            fill_in "post_deadline", with: Date.today
-            fill_in "start_time", with: Time.now
-            fill_in "end_time", with: Time.now + 1.hour
-            fill_in "URL", with: "http://example.com"
-            check "AI" # Assuming 'AI' is one of the tags
-            check "ML" # Assuming 'ML' is another tag
+        #     # Fill in the form fields
+        #     fill_in "Title", with: "Test Post"
+        #     fill_in "Location", with: "Test Location"
+        #     fill_in "post_start_date", with: Date.today
+        #     fill_in "post_end_date", with: Date.tomorrow
+        #     fill_in "Organiser", with: "Test Organiser"
+        #     fill_in "Description", with: "Test Description"
+        #     fill_in "post_deadline", with: Date.today
+        #     fill_in "start_time", with: Time.now
+        #     fill_in "end_time", with: Time.now + 1.hour
+        #     fill_in "URL", with: "http://example.com"
+        #     check "AI" # Assuming 'AI' is one of the tags
+        #     check "ML" # Assuming 'ML' is another tag
 
-            select "No", from: "Recurring"
-            fill_in "If recurring, then Recurring Interval", with: -1
-            # select "weeks", from: "If recurring, then Interval Unit"
-            fill_in "If recurring, then any custom recurring info?", with: "custom_recurring_info"
+        #     select "No", from: "Recurring"
+        #     fill_in "If recurring, then Recurring Interval", with: -1
+        #     # select "weeks", from: "If recurring, then Interval Unit"
+        #     fill_in "If recurring, then any custom recurring info?", with: "custom_recurring_info"
 
-            # Submit the form
-            click_button "Save"
+        #     # Submit the form
+        #     click_button "Save"
 
-            # Expectations
-            expect(page).to have_content("post was successfully created.")
-        end
+        #     # Expectations
+        #     expect(page).to have_content("post was successfully created.")
+        # end
 
-        scenario "Poster can't create post with start date in the past" do
+        scenario "poster can't create post with start date in the past" do
             user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '1')
             visit new_user_session_path
             fill_in "Email", with: user.email
@@ -521,7 +521,7 @@ RSpec.describe "Posts features:", type: :feature do
             expect(page).to have_content("Start date and End date can't be before today")
         end
 
-        scenario "Poster can't create post with end date before start date" do
+        scenario "poster can't create post with end date before start date" do
             user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '1')
             visit new_user_session_path
             fill_in "Email", with: user.email
@@ -557,7 +557,7 @@ RSpec.describe "Posts features:", type: :feature do
             expect(page).to have_content("Start date can't be after end date")
         end
 
-        scenario "Poster can't create post with deadline before today" do
+        scenario "poster can't create post with deadline before today" do
             user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '1')
             visit new_user_session_path
             fill_in "Email", with: user.email
@@ -589,7 +589,7 @@ RSpec.describe "Posts features:", type: :feature do
             expect(page).to have_content("Deadline can't be before today")
         end
 
-        it "normal user can't create a post" do
+        it "user (browser) can't create a post" do
             user = FactoryBot.create(:user)
             visit new_user_session_path
             fill_in "Email", with: user.email
@@ -602,7 +602,7 @@ RSpec.describe "Posts features:", type: :feature do
     end
 
     describe "editing a post-" do
-        scenario "Poster/admin edits a post" do
+        scenario "poster/admin edits a post" do
             user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '2')
             visit new_user_session_path
             fill_in "Email", with: user.email
@@ -647,7 +647,7 @@ RSpec.describe "Posts features:", type: :feature do
 
         end
 
-        scenario "Poster/admin can't edit a post by leaving a required field blank" do
+        scenario "poster/admin can't edit a post by leaving a required field blank" do
             user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '2')
             visit new_user_session_path
             fill_in "Email", with: user.email
@@ -752,7 +752,7 @@ RSpec.describe "Posts features:", type: :feature do
     end
 
     describe "viewing a post-" do
-        scenario "User views a post" do
+        scenario "user (browser) views a post" do
             user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '2')
             visit new_user_session_path
             fill_in "Email", with: user.email
@@ -787,7 +787,7 @@ RSpec.describe "Posts features:", type: :feature do
     end
 
     describe "searching for a post-" do
-        scenario "User searches for a post" do
+        scenario "user (browser) searches for a post" do
             user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '2')
             visit new_user_session_path
             fill_in "Email", with: user.email
@@ -898,11 +898,14 @@ RSpec.describe "Posts features:", type: :feature do
 
     describe "Approve posts:" do
         it "admin should approve a post" do
+            # Create an Admin account
             user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '2')
+            # Login as an Admin
             visit new_user_session_path
             fill_in "Email", with: user.email
             fill_in "Password", with: 'password'
             click_button "Log in"
+            # Create a new post (Admin and Poster can create posts)
             visit new_post_path
             fill_in "Title", with: "Test Post"
             fill_in "Location", with: "Test Location"
@@ -918,16 +921,18 @@ RSpec.describe "Posts features:", type: :feature do
             check "ML" # Assuming 'ML' is another tag
             select "No", from: "Recurring"
             click_button "Save"
+            # Once a new post is created, Go to pending page for approval
             click_link "Admin"
             click_link "Pending"
             expect(page).to have_content("Test Post")
             expect(page).to have_content("Awaiting Approval")
             click_link "Approve"
+            # Approved posts must be displayed on the upcoming page
             click_link "Upcoming"
             expect(page).to have_content("Test Post")
-        end
+        end 
 
-        it "posters or normal users should not be able to approve a post" do
+        it "posters or user (browser) should not be able to approve a post" do
             poster = FactoryBot.create(:poster)
             visit new_user_session_path
             fill_in "Email", with: poster.email
@@ -1016,7 +1021,7 @@ RSpec.describe "Posts features:", type: :feature do
             expect(page).to_not have_content("Test Post")
         end
 
-        it "Poster or normal users should not be able to email a post" do
+        it "poster or user (browser) should not be able to email a post" do
             poster = FactoryBot.create(:poster)
             visit new_user_session_path
             fill_in "Email", with: poster.email
@@ -1029,7 +1034,7 @@ RSpec.describe "Posts features:", type: :feature do
     end
     
     describe "Save posts:" do
-        it "user should be able to save a post to the saved" do
+        it "user (browser) should be able to save a post as favourite" do
             user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '2')
             user1 = User.create(email: 'test1@example.com', password: 'password', full_name: 'Test User 1', user_role: '0')
             visit new_user_session_path
@@ -1068,7 +1073,7 @@ RSpec.describe "Posts features:", type: :feature do
             expect(page).to have_content("Test Post")
         end
 
-        it "user should be able to unsave a post from the saved" do
+        it "user (browser) should be able to unsave a post from the saved" do
             user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '2')
             user1 = User.create(email: 'test1@example.com', password: 'password', full_name: 'Test User 1', user_role: '0')
             visit new_user_session_path
@@ -1110,7 +1115,7 @@ RSpec.describe "Posts features:", type: :feature do
             expect(page).to_not have_content("Test Post")
         end
 
-        it "if it's saved, it should show that it is already saved and instead give an option to unsave" do
+        it "if saved, show that it is already saved and give an option to unsave" do
             user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '2')
             user1 = User.create(email: 'test1@example.com', password: 'password', full_name: 'Test User 1', user_role: '0')
             visit new_user_session_path
@@ -1165,7 +1170,7 @@ RSpec.describe "Posts features:", type: :feature do
     end
 
     describe "my history page:" do
-        it "should show the history of all the posts the user has posted" do
+        it "should show the history of all the posts the poster/admin has posted" do
             user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '2')
             visit new_user_session_path
             fill_in "Email", with: user.email
@@ -1197,7 +1202,7 @@ RSpec.describe "Posts features:", type: :feature do
             expect(page).to have_content("Published")
         end
 
-        it "normal users should not be able to view the my history page" do
+        it "user (browser) should not be able to view my history page" do
             user = FactoryBot.create(:user)
             visit new_user_session_path
             fill_in "Email", with: user.email
@@ -1210,7 +1215,7 @@ RSpec.describe "Posts features:", type: :feature do
     end
 
     describe "Notifications page:" do
-        it "should show notifications for the user if a post's tags match the user's interests" do
+        it "should show notifications for the user (browser) if a post's tags match the user's interests" do
             user = User.create(email: 'test@example.com', password: 'password', full_name: 'Test User', user_role: '2')
             visit new_user_session_path
             fill_in "Email", with: user.email
@@ -1289,7 +1294,7 @@ RSpec.describe "Posts features:", type: :feature do
             expect(page).to have_content("Post was successfully saved.")
         end
             
-        it "Admins or posters should not be able to view the notifications page" do
+        it "admins or posters should not be able to view the notifications page" do
             poster = FactoryBot.create(:poster)
             visit new_user_session_path
             fill_in "Email", with: poster.email

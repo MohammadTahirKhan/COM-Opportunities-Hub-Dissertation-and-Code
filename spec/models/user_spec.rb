@@ -175,7 +175,7 @@ RSpec.describe User, type: :model do
   end
 
   describe 'Factory:' do
-    it 'should create user' do
+    it 'should create user (browser)' do
       user = create(:user)
       expect(user.id).to be_truthy
     end

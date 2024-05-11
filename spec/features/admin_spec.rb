@@ -10,7 +10,7 @@ RSpec.describe "Admin features:", type: :feature do
             visit admin_index_path(view: "users")
             expect(page).to have_content("COM Opportunities Hub")
         end
-        it "should show all users" do
+        it "should show all users to admin" do
             admin = FactoryBot.create(:admin)
             user1 = FactoryBot.create(:user)
             visit new_user_session_path
@@ -40,7 +40,7 @@ RSpec.describe "Admin features:", type: :feature do
             expect(page).to have_content("Admin")
         end
 
-        it "should edit user role to user" do
+        it "should edit user role to user (browser)" do
             admin = FactoryBot.create(:admin)
             user = FactoryBot.create(:poster)
             visit new_user_session_path
