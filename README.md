@@ -23,4 +23,17 @@ A Web Application to post, manage, browse and track opportunities for students a
 To run the automated tests, run
 `rspec`
 
-** Please look at the `db/seeds.rb` file to see the default users that are added **
+** Please look at the `db/seeds.rb` file to see all the default users that are added **
+Some of the default user credentials are:
+
+Admin:
+* Email: admin@gmail.com
+* Password: admin1
+
+Poster:
+* Email: poster@gmail.com
+* Password: poster1
+
+User (Browser):
+* Email: user@gmail.com
+* Password: usertest1
