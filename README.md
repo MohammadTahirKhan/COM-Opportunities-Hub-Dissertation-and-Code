@@ -36,4 +36,4 @@ Poster:
 
 User (Browser):
 * Email: user@gmail.com
-* Password: usertest1
+* Password: usertest1 
