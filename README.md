@@ -13,8 +13,8 @@ A Web Application to post, manage, browse and track opportunities for students a
 * Run `bundle install` to install Ruby dependencies 
 * Run `yarn install` to install JavaScript dependencies
 * Run `rails db:setup` to create the database and seed it with default data
-* Run `bin/shakapacker -w` to start the shakapacker server
-* Run `bundle exec rails s` in another terminal to start the server
+* Run `bundle exec rails s` in terminal to start the server
+* Run `bin/shakapacker -w` to start the shakapacker server (optional, if the above command fails to start the server automatically)
 
 ### URLs
 * The server will be running on `https://localhost:3000`
